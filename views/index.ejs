@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>TreBus</title>
+    </head>
+    <body>
+        <h1>TreBus – The best bus app in Tampere</h1>
+
+        <ul id="addresses">
+            <% addresses.map((address) => { %>
+                <li class="address-info">
+                    <span><%= address.name %></span>
+                    <span><%= address.address %></span>
+                </li>
+            <% }) %>
+        </ul>
+        <button id="update">Edit</button>
+
+        <form class="search-form" action="/addresses" method="post">
+            <input type="text" placeholder="enter name for hotspot" name="name">
+            <input type="text" placeholder="enter address" name="address">
+            <button type="submit">Add address</button>
+        </form>
+
+        <button id="test">Try this!</button>
+
+        <script src="main.js"></script>
+    </body>
+</html>
