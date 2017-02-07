@@ -7,7 +7,9 @@ const app = express();
 const MongoClient = require('mongodb').MongoClient;
 const mongoURL = require('./private.js').mongoURL;
 
-//const http = require('http');
+const APIkey = require('./private.js').APIkey;
+const APIpass = require('./private.js').APIpass;
+
 const request = require('request');
 
 let db;
@@ -92,6 +94,29 @@ app.put('/addresses', (req, res) => {
             return res.send(err);
         }
         res.send(result);
-    }
-)
+    })
+})
+
+app.delete('/addresses', (req, res) => {
+    console.log('täällä ollaan deletessä :D');
+    db.collection('addresses').findOneAndDelete({
+        name: req.body.name
+    }, (err, result) => {
+        if (err) {
+            return res.send(500, err);
+        }
+        res.send({
+            'error': 'deleted something :D'
+        });
+    })
+})
+
+let URL = 'http://api.publictransport.tampere.fi/prod/?user=anttispitkanen&pass=nysse123&request=route&from=3330354,6824717&to=3327691,6825408&show=1&Detail=limited';
+app.get('/joujou', (req, res) => {
+    request(URL, (error, response, body) => {
+        if (!error && response.statusCode === 200) {
+            //console.log(JSON.parse(body)[0][0].legs[0].locs);
+            res.send(body);
+        }
+    })
 })
