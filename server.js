@@ -42,6 +42,7 @@ app.get('/', (req, res) => {
     });
 })
 
+/*
 let testURL = 'http://data.itsfactory.fi/journeys/api/1/stop-points/0001';
 app.get('/test', (req, res) => {
     request(testURL, (error, response, body) => {
@@ -65,7 +66,7 @@ app.get('/test', (req, res) => {
         }
     })
 })
-
+*/
 
 app.post('/addresses', (req, res) => {
 
@@ -98,7 +99,6 @@ app.put('/addresses', (req, res) => {
 })
 
 app.delete('/addresses', (req, res) => {
-    console.log('täällä ollaan deletessä :D');
     db.collection('addresses').findOneAndDelete({
         name: req.body.name
     }, (err, result) => {
@@ -111,7 +111,8 @@ app.delete('/addresses', (req, res) => {
     })
 })
 
-let URL = 'http://api.publictransport.tampere.fi/prod/?user=anttispitkanen&pass=nysse123&request=route&from=3330354,6824717&to=3327691,6825408&show=1&Detail=limited';
+//let URL = 'http://api.publictransport.tampere.fi/prod/?user=anttispitkanen&pass=nysse123&request=route&from=3330354,6824717&to=3327691,6825408&show=1&Detail=limited';
+let URL = `http://api.publictransport.tampere.fi/prod/?${APIkey}&${APIpass}&request=route&from=3330354,6824717&to=3327691,6825408&show=1&Detail=limited`;
 app.get('/joujou', (req, res) => {
     request(URL, (error, response, body) => {
         if (!error && response.statusCode === 200) {
