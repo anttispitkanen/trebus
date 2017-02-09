@@ -105,15 +105,6 @@ fetch('joujou', {
 
     //helper function parses and renders route info
     parseRouteData(data[0][0]);
-
-    //KORJAA: tämä on matkan kesto, ei minuutit perille pääsyyn tästä hetkestä
-    //pitäisi siis olla ennemmin arrivalin ja nykyhetken eroitus
-    document.getElementById('duration').innerHTML += secondsToMinutes(data[0][0].duration) + ' minutes';
-
-    //document.getElementById('starting-point').innerHTML += data[0][0].legs[0].locs.slice(-1).pop().name;
-    //var arrival = data[0][0].legs.slice(-1).pop().locs.slice(-1).pop().arrTime;
-    //arrival = arrival.substr(8, 2) + '.' + arrival.substr(10, 2);
-    //document.getElementById('arrival').innerHTML += arrival;
 })
 
 
@@ -124,13 +115,53 @@ fetch('joujou', {
 
 //helper function parses and renders route info
 function parseRouteData(routeDataObject) {
+    var startingPoint = parseStartingPoint(routeDataObject);
+    var startingPointQueryString = startingPoint.split(' ').join('+');
+    console.log(startingPointQueryString);
+    var linkToLissu = `http://lissu.tampere.fi/?mobile=1&key=${startingPointQueryString}`;
+    var stopScheduleDataLink = `<a href="${linkToLissu}" target="_blank">${startingPoint}</a>`
+
+
     document.getElementById('departure').innerHTML += parseDeparture(routeDataObject);
     document.getElementById('bus-num').innerHTML += parseLineNum(routeDataObject);
     document.getElementById('arrival').innerHTML += parseArrival(routeDataObject);
-    document.getElementById('starting-point').innerHTML += parseStartingPoint(routeDataObject);
+    document.getElementById('starting-point').innerHTML += stopScheduleDataLink;
+    document.getElementById('duration').innerHTML += parseMinsToArrival(routeDataObject);
 }
 
 //separate functions for each data item
+function parseMinsToArrival(routeDataObject) {
+    var dateNow = new Date();
+
+    //current time as minutes (from 0:00)
+    var timeNow = 60 * dateNow.getHours() + dateNow.getMinutes();
+
+    var arrival;
+    arrival = '' + routeDataObject.legs.slice(-1).pop().locs.slice(-1).pop().arrTime;
+    arrival = parseInt(arrival.substr(8, 4)); //arrival time as int hhmm
+    var arrHours = Math.floor(arrival/100);
+    var arrMinutes = arrival % 100;
+
+    //arrival time as minutes from 0:00
+    var arrAsMinutes = arrHours * 60 + arrMinutes;
+
+    var duration = arrAsMinutes - timeNow; //duration in minutes
+
+    if (duration < 0) {
+        duration += 1440; //stupid hack to counter problems with date change at midnight
+    }
+    if (duration <= 60) {
+        return duration + ' minutes';
+    } else {
+        var hours = Math.floor(duration / 60);
+        var mins = duration%60;
+        if (mins < 10) {
+            mins = '0' + mins;
+        }
+        return hours + 'h ' + mins + ' minutes';
+    }
+}
+
 function parseStartingPoint(routeDataObject) {
     var startingPoint;
     startingPoint = routeDataObject.legs[0].locs.slice(-1).pop().name;
