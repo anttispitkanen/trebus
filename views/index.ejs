@@ -8,6 +8,7 @@
     <body>
         <h1>TreBus – The best bus app in Tampere</h1>
 
+<!--
         <ul id="addresses">
             <% addresses.map((address) => { %>
                 <li class="address-info">
@@ -24,15 +25,25 @@
             <button type="submit">Add address</button>
         </form>
 
-        <!--<button id="test">Try this!</button>-->
-        <button id="delete-latest">Delete the latest one!</button>
 
+        <button id="delete-latest">Delete the latest one!</button>
+-->
+        <form id="address-from-form">
+            <input id="address-from" type="text" placeholder="From" size="35"></input>
+            <input type="submit" value="Add" />
+        </form>
+
+        <ul id="added-addresses">
+
+        </ul>
+
+        <p>Hima - keskustori</p>
         <ul>
-            <li id="duration">I'll be there in: </li>
-            <li id="departure">Departure time: </li>
-            <li id="bus-num">Bus number: </li>
-            <li id="starting-point">From: </li>
-            <li id="arrival">Arrival time: </li>
+            <li>I'll be there in: <span id="duration">¯\_(ツ)_/¯</span></li>
+            <li>Departure time: <span id="departure">¯\_(ツ)_/¯</span></li>
+            <li>Bus number: <span id="bus-num">¯\_(ツ)_/¯</span></li>
+            <li>From: <span id="starting-point">¯\_(ツ)_/¯</span></li>
+            <li>Arrival time: <span id="arrival">¯\_(ツ)_/¯</span></li>
         </ul>
 
         <script src="main.js"></script>

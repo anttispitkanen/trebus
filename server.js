@@ -11,6 +11,7 @@ const APIkey = require('./private.js').APIkey;
 const APIpass = require('./private.js').APIpass;
 
 const request = require('request');
+const rp = require('request-promise');
 
 let db;
 
@@ -98,6 +99,50 @@ app.put('/addresses', (req, res) => {
     })
 })
 
+app.post('/find-address', (req, res) => {
+    const searchTerm = req.body.address;
+
+    let searchURL = parseAPIurl(searchTerm);
+
+    let coords;
+
+    rp(searchURL, (error, response, body) => {
+        console.log('päästiin ekaan requestiin :D');
+        if (!error && response.statusCode === 200) {
+            try {
+                coords = JSON.parse(body)[0].coords;
+            } catch (e) {
+                console.log(e);
+            }
+
+            return coords;
+        }
+    })
+    .then(() => {
+        console.log('coords: ' + coords)
+
+        if (coords) {
+            let mockURL = `http://api.publictransport.tampere.fi/prod/?${APIkey}&${APIpass}&request=route&from=${coords}&to=3327691,6825408&show=1&Detail=limited`;
+            console.log(mockURL);
+
+            rp(mockURL, (error, response, body) => {
+                if (!error && response.statusCode === 200) {
+                    console.log(body);
+                    res.send(body);
+                }
+            })
+        } else {
+            res.send({error: 'something went wrong with the request ¯\\_(ツ)_/¯'})
+        }
+
+    })
+    .catch(e => {
+        console.log(e);
+    })
+
+})
+
+/*
 app.delete('/addresses', (req, res) => {
     db.collection('addresses').findOneAndDelete({
         name: req.body.name
@@ -110,8 +155,26 @@ app.delete('/addresses', (req, res) => {
         });
     })
 })
+*/
+
+function parseAPIurl(from) {
+    const defaultAPIurl = 'http://api.publictransport.tampere.fi/prod/?request=geocode&format=json';
+    const fromPart = 'key=' + from.trim().split(' ').join('+');
+
+    const fullAPIurl = defaultAPIurl + '&' + fromPart + '&' + APIkey + '&' + APIpass;
+
+    return fullAPIurl;
+}
+
+/*
+parseAPIurl(from, to) {
+    const fromPart = from.split(' ').join('+');
+    const toPart = to.split(' ').join('+');
+}
+*/
 
 //let URL = 'http://api.publictransport.tampere.fi/prod/?user=anttispitkanen&pass=nysse123&request=route&from=3330354,6824717&to=3327691,6825408&show=1&Detail=limited';
+/*
 let URL = `http://api.publictransport.tampere.fi/prod/?${APIkey}&${APIpass}&request=route&from=3330354,6824717&to=3327691,6825408&show=1&Detail=limited`;
 app.get('/joujou', (req, res) => {
     request(URL, (error, response, body) => {
@@ -121,3 +184,4 @@ app.get('/joujou', (req, res) => {
         }
     })
 })
+*/

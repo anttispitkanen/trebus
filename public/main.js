@@ -5,6 +5,7 @@
 ///////////////////////////////////////////////////////////////
 /* UPDATE */
 
+/*
 var update = document.getElementById('update');
 
 update.addEventListener('click', function() {
@@ -24,7 +25,7 @@ update.addEventListener('click', function() {
     }).then((data) => {
         console.log(data);
         window.location.reload(true);
-
+*/
         /*
         if (data.value) {
             var name = data.value.name;
@@ -36,9 +37,10 @@ update.addEventListener('click', function() {
             document.getElementById('addresses').innerHTML += newHTML;
         }
         */
+/*
     })
 })
-
+*/
 
 /*
 var testButton = document.getElementById('test');
@@ -66,7 +68,7 @@ testButton.addEventListener('click', () => {
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 /* DELETE */
-
+/*
 var deleteButton = document.getElementById('delete-latest');
 deleteButton.addEventListener('click', () => {
     fetch('addresses', {
@@ -86,13 +88,69 @@ deleteButton.addEventListener('click', () => {
         window.location.reload();
     })
 });
+*/
 
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+/* INPUT ADDRESS HANDLING */
+
+var addressFromForm = document.getElementById('address-from-form');
+var addressFrom = document.getElementById('address-from');
+
+addressFromForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    if (addressFrom.value.length > 0) {
+        var mockData = `<li>${addressFrom.value}</li>`;
+        document.getElementById('added-addresses').innerHTML += mockData;
+
+        fetch('find-address', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'address': addressFrom.value
+            })
+        })
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                throw Error('error in client promise :DD');
+                return 'tuli mutka matkaan :/';
+            }
+        })
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                console.log(data[0][0]);
+                parseRouteData(data[0][0]);
+            }
+        })
+        .catch(e => {
+            console.log(e);
+        })
+    }
+
+
+
+    //clear the input field at the end
+    document.getElementById('address-from').value = '';
+})
+
+//var addressFromButton = document.getElementById('address-from-button');
+
+
+//addressFromButton.addEventListener('su')
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 /* TESTING FETCHING CONTENT */
-
+/*
 fetch('joujou', {
     method: 'get',
     headers: {
@@ -106,7 +164,7 @@ fetch('joujou', {
     //helper function parses and renders route info
     parseRouteData(data[0][0]);
 })
-
+*/
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
@@ -117,16 +175,15 @@ fetch('joujou', {
 function parseRouteData(routeDataObject) {
     var startingPoint = parseStartingPoint(routeDataObject);
     var startingPointQueryString = startingPoint.split(' ').join('+');
-    console.log(startingPointQueryString);
     var linkToLissu = `http://lissu.tampere.fi/?mobile=1&key=${startingPointQueryString}`;
     var stopScheduleDataLink = `<a href="${linkToLissu}" target="_blank">${startingPoint}</a>`
 
 
-    document.getElementById('departure').innerHTML += parseDeparture(routeDataObject);
-    document.getElementById('bus-num').innerHTML += parseLineNum(routeDataObject);
-    document.getElementById('arrival').innerHTML += parseArrival(routeDataObject);
-    document.getElementById('starting-point').innerHTML += stopScheduleDataLink;
-    document.getElementById('duration').innerHTML += parseMinsToArrival(routeDataObject);
+    document.getElementById('departure').innerHTML = parseDeparture(routeDataObject);
+    document.getElementById('bus-num').innerHTML = parseLineNum(routeDataObject);
+    document.getElementById('arrival').innerHTML = parseArrival(routeDataObject);
+    document.getElementById('starting-point').innerHTML = stopScheduleDataLink;
+    document.getElementById('duration').innerHTML = parseMinsToArrival(routeDataObject);
 }
 
 //separate functions for each data item
