@@ -173,16 +173,13 @@ fetch('joujou', {
 
 //helper function parses and renders route info
 function parseRouteData(routeDataObject) {
-    var startingPoint = parseStartingPoint(routeDataObject);
-    var startingPointQueryString = startingPoint.split(' ').join('+');
-    var linkToLissu = `http://lissu.tampere.fi/?mobile=1&key=${startingPointQueryString}`;
-    var stopScheduleDataLink = `<a href="${linkToLissu}" target="_blank">${startingPoint}</a>`
+
 
 
     document.getElementById('departure').innerHTML = parseDeparture(routeDataObject);
     document.getElementById('bus-num').innerHTML = parseLineNum(routeDataObject);
     document.getElementById('arrival').innerHTML = parseArrival(routeDataObject);
-    document.getElementById('starting-point').innerHTML = stopScheduleDataLink;
+    document.getElementById('starting-point').innerHTML = parseStartingPoint(routeDataObject);
     document.getElementById('duration').innerHTML = parseMinsToArrival(routeDataObject);
 }
 
@@ -221,8 +218,15 @@ function parseMinsToArrival(routeDataObject) {
 
 function parseStartingPoint(routeDataObject) {
     var startingPoint;
-    startingPoint = routeDataObject.legs[0].locs.slice(-1).pop().name;
-    return startingPoint;
+    if (routeDataObject.legs[0].locs.slice(-1).pop().name) {
+        startingPoint = routeDataObject.legs[0].locs.slice(-1).pop().name;
+    } else {
+        return 'Just walk, alright :DD';
+    }
+
+    var startingPointQueryString = startingPoint.split(' ').join('+');
+    var linkToLissu = `http://lissu.tampere.fi/?mobile=1&key=${startingPointQueryString}`;
+    return `<a href="${linkToLissu}" target="_blank">${startingPoint}</a>`
 }
 
 function parseArrival(routeDataObject) {
@@ -236,7 +240,12 @@ function parseDeparture(routeDataObject) {
     var departure;
 
     if (routeDataObject.legs[0].type === 'walk') {
-        departure = routeDataObject.legs[1].locs[0].depTime;
+        if (routeDataObject.legs.length > 1) {
+            departure = routeDataObject.legs[1].locs[0].depTime;
+        } else {
+            return 'Just walk, alright :DD';
+        }
+
     } else {
         departure = routeDataObject.legs[0].locs[0].depTime;
     }
@@ -248,9 +257,15 @@ function parseLineNum(routeDataObject) {
     var lineNum;
 
     if (routeDataObject.legs[0].type === 'walk') {
-        lineNum = routeDataObject.legs[1].code;
-    } else {
+        if (routeDataObject.legs.length > 1) {
+            lineNum = routeDataObject.legs[1].code;
+        } else {
+            lineNum = 'Just walk, alright :DD';
+        }
+    } else if (routeDataObject.legs[0].code == 1) {
         lineNum = routeDataObject.legs[0].code;
+    } else {
+        lineNum = 'Just walk, alright :DD';
     }
 
     return lineNum;

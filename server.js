@@ -158,7 +158,7 @@ app.delete('/addresses', (req, res) => {
 */
 
 function parseAPIurl(from) {
-    const defaultAPIurl = 'http://api.publictransport.tampere.fi/prod/?request=geocode&format=json';
+    const defaultAPIurl = 'http://api.publictransport.tampere.fi/prod/?request=geocode&format=json&cities=tampere';
     const fromPart = 'key=' + from.trim().split(' ').join('+');
 
     const fullAPIurl = defaultAPIurl + '&' + fromPart + '&' + APIkey + '&' + APIpass;
