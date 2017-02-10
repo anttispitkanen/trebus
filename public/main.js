@@ -95,6 +95,7 @@ deleteButton.addEventListener('click', () => {
 ///////////////////////////////////////////////////////////////
 /* INPUT ADDRESS HANDLING */
 
+/*
 var addressFromForm = document.getElementById('address-from-form');
 var addressFrom = document.getElementById('address-from');
 
@@ -140,6 +141,7 @@ addressFromForm.addEventListener('submit', (event) => {
     //clear the input field at the end
     document.getElementById('address-from').value = '';
 })
+*/
 
 //var addressFromButton = document.getElementById('address-from-button');
 
@@ -165,6 +167,10 @@ fetch('joujou', {
     parseRouteData(data[0][0]);
 })
 */
+
+let state = {
+    startingAddress: null
+}
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
@@ -283,7 +289,7 @@ document.getElementById('locate').addEventListener('click', () => {
             }
             let latitude = pos.coords.latitude;
             let longitude = pos.coords.longitude;
-            //alert(latitude + ', ' + longitude);
+
             document.getElementById('latitude').innerHTML = latitude;
             document.getElementById('longitude').innerHTML = longitude;
 
@@ -303,9 +309,35 @@ document.getElementById('locate').addEventListener('click', () => {
             })
             .then(data => {
                 console.log(data);
-                const street = data.street;
-                const num = data.house;
-                document.getElementById('fetched-address').innerHTML = street + ' ' + num;
+                //const street = data.street;
+                //const num = data.house;
+                state.startingAddress = data.street + ' ' + data.house;
+                document.getElementById('fetched-address').innerHTML = state.startingAddress;
+
+                fetch('find-address', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'address': state.startingAddress
+                    })
+                })
+                .then(res => {
+                    if (res.ok) { return res.json() }
+                    else { throw Error('error in client promise :DD')}
+                })
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        console.log(data[0][0]);
+                        parseRouteData(data[0][0]);
+                    }
+                })
+                .catch(e => {
+                    console.log(e);
+                })
             })
 
         }, failure => {
