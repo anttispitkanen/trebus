@@ -15,6 +15,8 @@ const rp = require('request-promise');
 
 let db;
 
+app.set('port', (process.env.PORT || 3000));
+
 MongoClient.connect(mongoURL, (err, database) => {
     if (err) {
         return console.log(err);
