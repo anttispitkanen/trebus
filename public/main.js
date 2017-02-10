@@ -108,7 +108,7 @@ addressFromForm.addEventListener('submit', (event) => {
         fetch('find-address', {
             method: 'post',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json; charset=UTF-8'
             },
             body: JSON.stringify({
                 'address': addressFrom.value

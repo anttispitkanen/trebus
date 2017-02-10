@@ -108,6 +108,7 @@ app.post('/find-address', (req, res) => {
 
     rp(searchURL, (error, response, body) => {
         console.log('päästiin ekaan requestiin :D');
+        //console.log(response);
         if (!error && response.statusCode === 200) {
             try {
                 coords = JSON.parse(body)[0].coords;
@@ -123,16 +124,16 @@ app.post('/find-address', (req, res) => {
 
         if (coords) {
             let mockURL = `http://api.publictransport.tampere.fi/prod/?${APIkey}&${APIpass}&request=route&from=${coords}&to=3327691,6825408&show=1&Detail=limited`;
-            console.log(mockURL);
+            //console.log(mockURL);
 
             rp(mockURL, (error, response, body) => {
                 if (!error && response.statusCode === 200) {
-                    console.log(body);
+                    //console.log(body);
                     res.send(body);
                 }
             })
         } else {
-            res.send({error: 'something went wrong with the request ¯\\_(ツ)_/¯'})
+            res.send({error: 'ÄÄÄÄ something went wrong with the request ¯\\_(ツ)_/¯'})
         }
 
     })
@@ -157,12 +158,27 @@ app.delete('/addresses', (req, res) => {
 })
 */
 
-function parseAPIurl(from) {
+function parseAPIurl(address) {
     const defaultAPIurl = 'http://api.publictransport.tampere.fi/prod/?request=geocode&format=json&cities=tampere';
-    const fromPart = 'key=' + from.trim().split(' ').join('+');
 
-    const fullAPIurl = defaultAPIurl + '&' + fromPart + '&' + APIkey + '&' + APIpass;
+    //manually encoding address to url suitable
+    // ä to %C3%A4
+    // ö to %C3%B6
+    // å to %C3%A5
+    let encodedAddress = address.toLowerCase().split('').map(letter => {
+        if (letter === 'ä') {
+            return '%C3%A4';
+        } else if (letter === 'ö') {
+            return '%C3%B6';
+        } else if (letter === 'å') {
+            return '%C3%A5';
+        } else {
+            return letter; //if no encoding needed for the character
+        }
+    }).join('');
 
+    let fromPart = 'key=' + encodedAddress.trim().split(' ').join('+');
+    const fullAPIurl = defaultAPIurl + '&' + APIkey + '&' + APIpass + '&' + fromPart ;
     return fullAPIurl;
 }
 
