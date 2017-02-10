@@ -274,3 +274,26 @@ function parseLineNum(routeDataObject) {
 function secondsToMinutes(seconds) {
     return seconds/60;
 }
+
+
+
+document.getElementById('locate').addEventListener('click', () => {
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((pos) => {
+            if (!pos) {
+                alert('no https');
+            }
+            let latitude = pos.coords.latitude;
+            let longitude = pos.coords.longitude;
+            //alert(latitude + ', ' + longitude);
+            document.getElementById('latitude').innerHTML = latitude;
+            document.getElementById('longitude').innerHTML = longitude;
+        }, failure => {
+            alert('something went wrong, probably with HTTPS ¯\\_(ツ)_/¯');
+        })
+    } else {
+        alert('no geolocation available :/');
+    }
+
+})
