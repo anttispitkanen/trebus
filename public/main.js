@@ -286,6 +286,28 @@ document.getElementById('locate').addEventListener('click', () => {
             //alert(latitude + ', ' + longitude);
             document.getElementById('latitude').innerHTML = latitude;
             document.getElementById('longitude').innerHTML = longitude;
+
+            fetch('locate-me', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'latitude': latitude,
+                    'longitude': longitude
+                })
+            })
+            .then(res => {
+                if (res.ok) { return res.json() }
+                else { throw Error('error in client promise :DD')}
+            })
+            .then(data => {
+                console.log(data);
+                const street = data.street;
+                const num = data.house;
+                document.getElementById('fetched-address').innerHTML = street + ' ' + num;
+            })
+
         }, failure => {
             alert('something went wrong, probably with HTTPS ¯\\_(ツ)_/¯');
         })

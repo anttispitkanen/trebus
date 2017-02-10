@@ -102,6 +102,33 @@ app.put('/addresses', (req, res) => {
     })
 })
 
+app.post('/locate-me', (req, res) => {
+    const latitude = req.body.latitude;
+    const longitude = req.body.longitude;
+
+    console.log('lat: ' + latitude);
+    console.log('lng: ' + longitude);
+
+    const defaultAPIurl = 'https://geocode.xyz/';
+    const queryUrl = `${defaultAPIurl}${latitude},${longitude}?json=1`;
+    console.log('queryUrl: ' + queryUrl);
+
+    request(queryUrl, (error, response, body) => {
+        if (!error && response.statusCode === 200) {
+            //console.log(body);
+            const jsonbody = JSON.parse(body);
+            console.log('street: ' + jsonbody.staddress);
+            console.log('house: ' + jsonbody.stnumber);
+            res.send({
+                'street': jsonbody.staddress,
+                'house': jsonbody.stnumber
+            })
+        }
+    })
+
+})
+
+
 app.post('/find-address', (req, res) => {
     const searchTerm = req.body.address;
 
