@@ -103,7 +103,7 @@ addressFromForm.addEventListener('submit', (event) => {
 
     if (addressFrom.value.length > 0) {
         var mockData = `<li>${addressFrom.value}</li>`;
-        document.getElementById('added-addresses').innerHTML += mockData;
+        document.getElementById('added-addresses').innerHTML = mockData;
 
         fetch('find-address', {
             method: 'post',
@@ -173,9 +173,6 @@ fetch('joujou', {
 
 //helper function parses and renders route info
 function parseRouteData(routeDataObject) {
-
-
-
     document.getElementById('departure').innerHTML = parseDeparture(routeDataObject);
     document.getElementById('bus-num').innerHTML = parseLineNum(routeDataObject);
     document.getElementById('arrival').innerHTML = parseArrival(routeDataObject);
