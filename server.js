@@ -16,6 +16,7 @@ const rp = require('request-promise');
 let db;
 
 app.set('port', (process.env.PORT || 3000));
+app.use(express.static(__dirname + '/public'));
 
 MongoClient.connect(mongoURL, (err, database) => {
     if (err) {
