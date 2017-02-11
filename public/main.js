@@ -283,7 +283,7 @@ function secondsToMinutes(seconds) {
 document.getElementById('locate').addEventListener('click', () => {
 
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((pos) => {
+        navigator.geolocation.getCurrentPosition(pos => {
             if (!pos) {
                 alert('no https');
             }

@@ -13,6 +13,8 @@ const APIpass = require('./private.js').APIpass;
 const request = require('request');
 const rp = require('request-promise');
 
+const streetnames = require('./streetnames.js');
+
 let db;
 
 app.set('port', (process.env.PORT || 3000));
@@ -117,7 +119,14 @@ app.post('/locate-me', (req, res) => {
         if (!error && response.statusCode === 200) {
             //console.log(body);
             const jsonbody = JSON.parse(body);
-            console.log('street: ' + jsonbody.staddress);
+            let correctStreetname;
+            if (streetnames.hasOwnProperty(jsonbody.staddress)) {
+                correctStreetname = sreetnames[jsonbody.staddress];
+            } else {
+                correctStreetname = jsonbody.staddress;
+            }
+
+            //console.log('street: ' + jsonbody.staddress);
             console.log('house: ' + jsonbody.stnumber);
             res.send({
                 'street': jsonbody.staddress,
@@ -163,7 +172,7 @@ app.post('/find-address', (req, res) => {
                 }
             })
         } else {
-            res.send({error: 'ÄÄÄÄ something went wrong with the request ¯\\_(ツ)_/¯'})
+            res.send({error: 'something went wrong with the request ¯\\_(ツ)_/¯'})
         }
 
     })
