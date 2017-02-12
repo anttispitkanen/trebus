@@ -121,7 +121,7 @@ app.post('/locate-me', (req, res) => {
             const jsonbody = JSON.parse(body);
             let correctStreetname;
             if (streetnames.hasOwnProperty(jsonbody.staddress)) {
-                correctStreetname = sreetnames[jsonbody.staddress];
+                correctStreetname = streetnames[jsonbody.staddress];
             } else {
                 correctStreetname = jsonbody.staddress;
             }

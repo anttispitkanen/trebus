@@ -1,3 +1,6 @@
+//list of street names in tampere from http://www.puhdistussuunnitelmat.fi/tampere/kadut.htm
+//here are only the ones with 'ä', 'ö' or 'å' in them
+
 module.exports = {
     "Erkkilankatu": "Erkkilänkatu",
     "Eratie": "Erätie",
