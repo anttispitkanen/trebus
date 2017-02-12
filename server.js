@@ -120,16 +120,17 @@ app.post('/locate-me', (req, res) => {
             //console.log(body);
             const jsonbody = JSON.parse(body);
             let correctStreetname;
+
             if (streetnames.hasOwnProperty(jsonbody.staddress)) {
                 correctStreetname = streetnames[jsonbody.staddress];
             } else {
                 correctStreetname = jsonbody.staddress;
             }
 
-            //console.log('street: ' + jsonbody.staddress);
+            console.log('street: ' + correctStreetname);
             console.log('house: ' + jsonbody.stnumber);
             res.send({
-                'street': jsonbody.staddress,
+                'street': correctStreetname,
                 'house': jsonbody.stnumber
             })
         }
@@ -172,7 +173,7 @@ app.post('/find-address', (req, res) => {
                 }
             })
         } else {
-            res.send({error: 'something went wrong with the request ¯\\_(ツ)_/¯'})
+            res.send({error: 'something went wrong with the request on server ¯\\_(ツ)_/¯'})
         }
 
     })
@@ -218,6 +219,7 @@ function parseAPIurl(address) {
 
     let fromPart = 'key=' + encodedAddress.trim().split(' ').join('+');
     const fullAPIurl = defaultAPIurl + '&' + APIkey + '&' + APIpass + '&' + fromPart ;
+    console.log(fullAPIurl);
     return fullAPIurl;
 }
 
