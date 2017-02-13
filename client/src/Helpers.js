@@ -20,7 +20,13 @@ export default class Helpers {
         var duration = arrAsMinutes - timeNow; //duration in minutes
 
         if (duration < 0) {
-            duration += 1440; //stupid hack to counter problems with date change at midnight
+            //stupid hack to counter problems with date change at midnight
+            duration += 1440;
+
+            if (duration === 1439) {
+                //equally stupid hack to counter problems with less than one minute turning to 23h59min
+                duration = 0;
+            }
         }
         if (duration <= 60) {
             return duration + ' minutes';
