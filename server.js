@@ -41,6 +41,7 @@ app.use(bodyParser.json());
 
 app.set('view engine', 'ejs');
 
+/*
 app.get('/', (req, res) => {
     db.collection('addresses').find().toArray((err, results) => {
 
@@ -51,6 +52,7 @@ app.get('/', (req, res) => {
         res.render('index.ejs', { addresses: results });
     });
 })
+*/
 
 /*
 let testURL = 'http://data.itsfactory.fi/journeys/api/1/stop-points/0001';
@@ -78,6 +80,7 @@ app.get('/test', (req, res) => {
 })
 */
 
+/*
 app.post('/addresses', (req, res) => {
 
     db.collection('addresses').save(req.body, (err, result) => {
@@ -89,7 +92,9 @@ app.post('/addresses', (req, res) => {
         res.redirect('/');
     })
 })
+*/
 
+/*
 app.put('/addresses', (req, res) => {
     db.collection('addresses').findOneAndUpdate({
         name: 'Rautatieasema'
@@ -107,17 +112,18 @@ app.put('/addresses', (req, res) => {
         res.send(result);
     })
 })
+*/
 
 app.post('/locate-me', (req, res) => {
     const latitude = req.body.latitude;
     const longitude = req.body.longitude;
 
-    console.log('lat: ' + latitude);
-    console.log('lng: ' + longitude);
+    //console.log('lat: ' + latitude);
+    //console.log('lng: ' + longitude);
 
     const defaultAPIurl = 'https://geocode.xyz/';
     const queryUrl = `${defaultAPIurl}${latitude},${longitude}?json=1`;
-    console.log('queryUrl: ' + queryUrl);
+    //console.log('queryUrl: ' + queryUrl);
 
     request(queryUrl, (error, response, body) => {
         if (!error && response.statusCode === 200) {
@@ -131,8 +137,8 @@ app.post('/locate-me', (req, res) => {
                 correctStreetname = jsonbody.staddress;
             }
 
-            console.log('street: ' + correctStreetname);
-            console.log('house: ' + jsonbody.stnumber);
+            //console.log('street: ' + correctStreetname);
+            //console.log('house: ' + jsonbody.stnumber);
             res.send({
                 'street': correctStreetname,
                 'house': jsonbody.stnumber
@@ -144,15 +150,15 @@ app.post('/locate-me', (req, res) => {
 
 
 app.post('/find-address', (req, res) => {
-    const searchTerm = req.body.address;
+    const startAddress = req.body.address;
+    const destCoords = req.body.coords;
 
-    let searchURL = parseAPIurl(searchTerm);
+    let searchURL = parseAPIurl(startAddress);
 
     let coords;
 
     rp(searchURL, (error, response, body) => {
-        console.log('päästiin ekaan requestiin :D');
-        //console.log(response);
+        //console.log('päästiin ekaan requestiin :D');
         if (!error && response.statusCode === 200) {
             try {
                 coords = JSON.parse(body)[0].coords;
@@ -164,15 +170,12 @@ app.post('/find-address', (req, res) => {
         }
     })
     .then(() => {
-        console.log('coords: ' + coords)
 
         if (coords) {
-            let mockURL = `http://api.publictransport.tampere.fi/prod/?${APIkey}&${APIpass}&request=route&from=${coords}&to=3327691,6825408&show=1&Detail=limited`;
-            //console.log(mockURL);
+            let queryURL = `http://api.publictransport.tampere.fi/prod/?${APIkey}&${APIpass}&request=route&from=${coords}&to=${destCoords}&show=1&Detail=limited`;
 
-            rp(mockURL, (error, response, body) => {
+            rp(queryURL, (error, response, body) => {
                 if (!error && response.statusCode === 200) {
-                    //console.log(body);
                     res.send(body);
                 }
             })
@@ -223,26 +226,6 @@ function parseAPIurl(address) {
 
     let fromPart = 'key=' + encodedAddress.trim().split(' ').join('+');
     const fullAPIurl = defaultAPIurl + '&' + APIkey + '&' + APIpass + '&' + fromPart ;
-    console.log(fullAPIurl);
+    //console.log(fullAPIurl);
     return fullAPIurl;
 }
-
-/*
-parseAPIurl(from, to) {
-    const fromPart = from.split(' ').join('+');
-    const toPart = to.split(' ').join('+');
-}
-*/
-
-//let URL = 'http://api.publictransport.tampere.fi/prod/?user=anttispitkanen&pass=nysse123&request=route&from=3330354,6824717&to=3327691,6825408&show=1&Detail=limited';
-/*
-let URL = `http://api.publictransport.tampere.fi/prod/?${APIkey}&${APIpass}&request=route&from=3330354,6824717&to=3327691,6825408&show=1&Detail=limited`;
-app.get('/joujou', (req, res) => {
-    request(URL, (error, response, body) => {
-        if (!error && response.statusCode === 200) {
-            //console.log(JSON.parse(body)[0][0].legs[0].locs);
-            res.send(body);
-        }
-    })
-})
-*/

@@ -1,4 +1,5 @@
 import React from 'react';
+import Hotspots from './Hotspots.jsx';
 
 export default class MyLocation extends React.Component {
 
@@ -20,8 +21,8 @@ export default class MyLocation extends React.Component {
                     alert('no https');
                 }
 
-                console.log('lat:' + pos.coords.latitude);
-                console.log('lng:' + pos.coords.longitude);
+                //console.log('lat:' + pos.coords.latitude);
+                //console.log('lng:' + pos.coords.longitude);
 
                 this.setState({
                     latitude: pos.coords.latitude,
@@ -43,10 +44,7 @@ export default class MyLocation extends React.Component {
                     else { throw Error('error in client promise :DD')}
                 })
                 .then(data => {
-                    console.log(data);
-                    //const street = data.street;
-                    //const num = data.house;
-                    //state.startingAddress = data.street + ' ' + data.house;
+                    //console.log(data);
 
                     this.setState({
                         startingAddress: data.street + ' ' + data.house
@@ -73,45 +71,44 @@ export default class MyLocation extends React.Component {
     render() {
 
         if (this.state.latitude === null || this.state.longitude === null) {
+            //console.log('no coordinates yet');
             return <div>Waiting for location...</div>
         }
 
+        if (this.state.startingAddress === null) {
+            //console.log('no address yet');
+            return(
+                <div>
+                    <div className="my-location">
+                        <p>Location:</p>
+                        <ul>
+                            <li>Latitude: {this.state.latitude}</li>
+                            <li>Longitude: {this.state.longitude}</li>
+                            <li>Address: Fetching address...</li>
+                        </ul>
+                    </div>
+
+                </div>
+            )
+        }
+
         return(
-            <div className="my-location">
-                <button id="locate" onClick={this.locateMe.bind(this)}>Locate me!</button>
-                <p>Location:</p>
-                <ul>
-                    <li>Latitude: <span id="latitude">{this.state.latitude}</span></li>
-                    <li>Longitude: <span id="longitude">{this.state.longitude}</span></li>
-                    <li>Address: <span id="fetched-address">{this.state.startingAddress}</span></li>
-                </ul>
+
+            <div>
+                <div className="my-location">
+                    <p>Location:</p>
+                    <ul>
+                        <li>Latitude: {this.state.latitude}</li>
+                        <li>Longitude: {this.state.longitude}</li>
+                        <li>Address: {this.state.startingAddress}</li>
+                    </ul>
+                    <button onClick={this.locateMe.bind(this)}>Locate me!</button>
+                </div>
+
+                <div>
+                    <Hotspots startingAddress={this.state.startingAddress} />
+                </div>
             </div>
         )
     }
 }
-
-    /*
-    fetch('find-address', {
-    method: 'post',
-    headers: {
-    'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-    'address': state.startingAddress
-    })
-    })
-    .then(res => {
-    if (res.ok) { return res.json() }
-    else { throw Error('error in client promise :DD')}
-    })
-    .then(data => {
-    if (data.error) {
-    alert(data.error);
-    } else {
-    console.log(data[0][0]);
-    //parseRouteData(data[0][0]);
-    }
-    })
-
-    })
-    */

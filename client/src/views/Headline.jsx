@@ -5,7 +5,7 @@ export default class Headline extends React.Component {
         return(
             <div className="headline">
                 <h1>TreBus</h1>
-                <h2>The best bus app in Tampere</h2>
+                <h4>The best bus app in Tampere</h4>
             </div>
         )
     }
