@@ -17,8 +17,12 @@ const streetnames = require('./streetnames.js');
 
 let db;
 
-app.set('port', (process.env.PORT || 3000));
+app.set('port', (process.env.PORT || 3001));
 app.use(express.static(__dirname + '/public'));
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('client/build'));
+}
 
 MongoClient.connect(mongoURL, (err, database) => {
     if (err) {
@@ -32,7 +36,7 @@ MongoClient.connect(mongoURL, (err, database) => {
 })
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
+//app.use(express.static('public'));
 app.use(bodyParser.json());
 
 app.set('view engine', 'ejs');

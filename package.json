@@ -1,11 +1,12 @@
 {
   "name": "trebus",
   "version": "1.0.0",
-  "description": "The best bus app in Tampere",
+  "description": "The best bus app in Tampere :DD",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "babel-node server.js",
+    "client": "babel-node start-client.js",
     "dev": "nodemon server.js"
   },
   "author": "Antti Pitkänen",
@@ -19,10 +20,14 @@
     "request-promise": "^4.1.1"
   },
   "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-2": "^6.22.0",
+    "concurrently": "^3.2.0",
     "nodemon": "^1.11.0"
   },
   "engines": {
-      "node": "6.2.1",
-      "npm": "3.9.3"
+    "node": "6.2.1",
+    "npm": "3.9.3"
   }
 }
