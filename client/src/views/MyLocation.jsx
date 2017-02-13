@@ -16,6 +16,12 @@ export default class MyLocation extends React.Component {
     locateMe() {
         if (navigator.geolocation) {
 
+            this.setState({
+                latitude: null,
+                longitude: null,
+                startingAddress: null
+            })
+
             navigator.geolocation.getCurrentPosition(pos => {
                 if (!pos) {
                     alert('no https');
@@ -72,7 +78,7 @@ export default class MyLocation extends React.Component {
 
         if (this.state.latitude === null || this.state.longitude === null) {
             //console.log('no coordinates yet');
-            return <div>Waiting for location...</div>
+            return <div>Locating you...</div>
         }
 
         if (this.state.startingAddress === null) {

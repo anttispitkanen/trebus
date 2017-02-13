@@ -2,13 +2,6 @@
 
 export default class Helpers {
 
-
-    ///////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////
-    /* HELPER FUNCTIONS */
-
-    //separate functions for each data item
     static parseMinsToArrival(routeDataObject) {
         var dateNow = new Date();
 
@@ -54,10 +47,8 @@ export default class Helpers {
 
         return({
             'departStop': startingPoint,
-            'infoLink': linkToLissu 
+            'infoLink': linkToLissu
         })
-
-        //return `<a href="${linkToLissu}" target="_blank">${startingPoint}</a>`
     }
 
     static parseArrival(routeDataObject) {
