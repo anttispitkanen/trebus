@@ -78,7 +78,12 @@ export default class MyLocation extends React.Component {
 
         if (this.state.latitude === null || this.state.longitude === null) {
             //console.log('no coordinates yet');
-            return <div>Locating you...</div>
+            return (
+                <div>
+                    <p>Locating you...</p>
+                    <img src="wheel.svg" alt="loading wheel"></img>
+                </div>
+            )
         }
 
         if (this.state.startingAddress === null) {

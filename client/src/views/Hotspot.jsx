@@ -52,7 +52,12 @@ export default class Hotspot extends React.Component {
         if (this.state.thereIn === null || this.state.departureTime === null
             || this.state.busNumber === null || this.state.departAddress === null
             || this.state.arrivalTime === null) {
-            return(<p>Fetching route to {this.props.name}...</p>)
+            return(
+                <div>
+                    <p>Fetching route to {this.props.name}...</p>
+                    <img src="wheel.svg" alt="loading wheel"></img>
+                </div>
+            )
         }
 
         if (!this.state.departAddress.infoLink) {
