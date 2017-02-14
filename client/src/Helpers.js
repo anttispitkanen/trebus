@@ -28,16 +28,33 @@ export default class Helpers {
                 duration = 0;
             }
         }
+
+        //wow such clever much hack
+        let durationTimeObject = {
+            hoursNum: '',
+            hoursText: '',
+            minsNum: '',
+            minsText: ''
+        }
+
         if (duration <= 60) {
-            return duration + ' minutes';
+            //return duration + ' minutes';
+            durationTimeObject.minsNum = duration;
+            durationTimeObject.minsText = 'min';
         } else {
             var hours = Math.floor(duration / 60);
             var mins = duration%60;
             if (mins < 10) {
                 mins = '0' + mins;
             }
-            return hours + 'h ' + mins + ' minutes';
+            //return hours + 'h ' + mins + ' minutes';
+            durationTimeObject.hoursNum = hours;
+            durationTimeObject.hoursText = 'h';
+            durationTimeObject.hoursNum = mins;
+            durationTimeObject.hoursNum = 'min';
         }
+
+        return durationTimeObject;
     }
 
     static parseStartingPoint(routeDataObject) {
@@ -45,7 +62,7 @@ export default class Helpers {
         if (routeDataObject.legs[0].locs.slice(-1).pop().name) {
             startingPoint = routeDataObject.legs[0].locs.slice(-1).pop().name;
         } else {
-            return 'Just walk, alright :DD';
+            return 'Just walk :DD';
         }
 
         var startingPointQueryString = startingPoint.split(' ').join('+');
@@ -71,7 +88,7 @@ export default class Helpers {
             if (routeDataObject.legs.length > 1) {
                 departure = routeDataObject.legs[1].locs[0].depTime;
             } else {
-                return 'Just walk, alright :DD';
+                return 'Just walk :DD';
             }
 
         } else {
@@ -88,12 +105,12 @@ export default class Helpers {
             if (routeDataObject.legs.length > 1) {
                 lineNum = routeDataObject.legs[1].code;
             } else {
-                lineNum = 'Just walk, alright :DD';
+                lineNum = 'Just walk :DD';
             }
         } else if (routeDataObject.legs[0].code === '1') {
             lineNum = routeDataObject.legs[0].code;
         } else {
-            lineNum = 'Just walk, alright :DD';
+            lineNum = 'Just walk :DD';
         }
 
         return lineNum;

@@ -5,7 +5,7 @@ import Hotspot from './Hotspot.jsx';
 
 const definedHotspots = [
     {
-        name: 'Koti',
+        name: 'Home',
         coords: '3330354.500000,6824717.000000'
     },
     {
@@ -27,7 +27,7 @@ export default class Test extends React.Component {
 
     render() {
         return(
-            <div>
+            <div className="hotspots">
                 {definedHotspots.map(hs => {
                     return (<Hotspot name={hs.name} coords={hs.coords} startingAddress={this.props.startingAddress} key={hs.coords} />)
                 })}

@@ -53,19 +53,27 @@ export default class Hotspot extends React.Component {
             || this.state.busNumber === null || this.state.departAddress === null
             || this.state.arrivalTime === null) {
             return(
-                <div>
-                    <p>Fetching route to {this.props.name}...</p>
+                <div className="single-hotspot">
+                    <h3>{this.props.name}</h3>
+                    <p>Fetching route...</p>
                     <img src="wheel.svg" alt="loading wheel"></img>
                 </div>
             )
         }
+
+        const hoursNum = this.state.thereIn.hoursNum;
+        const hours = this.state.thereIn.hoursText;
+        const minsNum = this.state.thereIn.minsNum;
+        const mins = this.state.thereIn.minsText;
 
         if (!this.state.departAddress.infoLink) {
             return(
                 <div className="single-hotspot">
                     <h3>{this.props.name}</h3>
                         <ul>
-                            <li>I'll be there in: {this.state.thereIn}</li>
+                            <li>
+                                <span>{hoursNum}</span> {hours} <span>{minsNum}</span> {mins}
+                            </li>
                             <li>Departure time: {this.state.departureTime}</li>
                             <li>Bus number: {this.state.busNumber}</li>
                             <li>From: {this.state.departAddress}</li>
@@ -79,7 +87,9 @@ export default class Hotspot extends React.Component {
             <div className="single-hotspot">
                 <h3>{this.props.name}</h3>
                     <ul>
-                        <li>I'll be there in: {this.state.thereIn}</li>
+                        <li>
+                            <span>{hoursNum}</span> {hours} <span>{minsNum}</span> {mins}
+                        </li>
                         <li>Departure time: {this.state.departureTime}</li>
                         <li>Bus number: {this.state.busNumber}</li>
                         <li>From: <a href={this.state.departAddress.infoLink} target="_blank">

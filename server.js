@@ -163,7 +163,7 @@ app.post('/find-address', (req, res) => {
             try {
                 coords = JSON.parse(body)[0].coords;
             } catch (e) {
-                console.log(e);
+                console.log('Error ensimmäisessä request-promisessa: ' + e);
             }
 
             return coords;

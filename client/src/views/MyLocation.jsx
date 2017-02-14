@@ -79,9 +79,9 @@ export default class MyLocation extends React.Component {
         if (this.state.latitude === null || this.state.longitude === null) {
             //console.log('no coordinates yet');
             return (
-                <div>
+                <div className="my-location">
+                    <i className="location-marker location-spin fa fa-map-marker" aria-hidden="true"></i>
                     <p>Locating you...</p>
-                    <img src="wheel.svg" alt="loading wheel"></img>
                 </div>
             )
         }
@@ -91,7 +91,7 @@ export default class MyLocation extends React.Component {
             return(
                 <div>
                     <div className="my-location">
-                        <p>Location:</p>
+                        <i className="location-marker location-spin fa fa-map-marker" aria-hidden="true"></i>
                         <ul>
                             <li>Latitude: {this.state.latitude}</li>
                             <li>Longitude: {this.state.longitude}</li>
@@ -107,13 +107,13 @@ export default class MyLocation extends React.Component {
 
             <div>
                 <div className="my-location">
-                    <p>Location:</p>
+                    <i className="location-marker fa fa-map-marker" aria-hidden="true"></i>
                     <ul>
                         <li>Latitude: {this.state.latitude}</li>
                         <li>Longitude: {this.state.longitude}</li>
                         <li>Address: {this.state.startingAddress}</li>
                     </ul>
-                    <button onClick={this.locateMe.bind(this)}>Locate me!</button>
+                    <div className="button" onClick={this.locateMe.bind(this)}>Locate me!</div>
                 </div>
 
                 <div>

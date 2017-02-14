@@ -10,6 +10,7 @@ class App extends Component {
             <div className="App">
                 <Headline />
                 <MyLocation />
+                <p className="copyright">© 2017 <a href="https://github.com/anttispitkanen" target="_blank">Antti Pitkänen</a></p>
             </div>
         );
     }
