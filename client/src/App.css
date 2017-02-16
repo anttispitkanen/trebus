@@ -74,17 +74,34 @@ body {
     width: 100%;
     height: auto;
     min-height: 100vh;
+    /*color: #333;*/
+    color: #1D1E18;
+    background-color: #FBFEF9;
 }
 
 .headline {
     text-align: center;
     padding: 30px 0 10px;
+    /*
+    background-image: linear-gradient(
+            #FFF399, #F8FF36
+        );
+    */
+    box-shadow: 0px 0px 2px 0px #333;
+    color: #FBFEF9;
+    background-color: #A31621;
 }
 
 .headline h1 {
-    font-size: 30px;
+    /*font-size: 30px;*/
+    font-size: 45px;
     font-weight: bold;
     padding-bottom: 20px;
+}
+
+.headline h4 {
+    padding-bottom: 20px;
+    font-style: italic;
 }
 
 .my-location {
@@ -104,7 +121,7 @@ body {
 }
 
 .location-marker.location-spin {
-    animation: location-spin 1.5s linear infinite;
+    animation: location-spin 1.5s ease infinite;
 }
 
 @keyframes location-spin {
@@ -112,7 +129,7 @@ body {
         transform: rotateY(0deg);
     }
     to {
-        transform: rotateY(360deg);
+        transform: rotateY(720deg);
     }
 }
 
@@ -128,10 +145,13 @@ body {
     padding: 15px;
     margin: 15px;
     /*border: 1px solid #333;*/
-    background-color: #F8FF36;
+    /*background-color: #F8FF36;*/
+    background-color: #2F4550;
     font-size: 16px;
     box-shadow: 0px 3px 2px -2px #333;
     cursor: pointer;
+    color: #FBFEF9;
+    text-transform: uppercase;
 }
 
 .hotspots {
@@ -145,7 +165,7 @@ body {
 
 .single-hotspot {
     /*border: 3px solid black;*/
-    background-color: white;
+    background-color: #FBFEF9;
     border-radius: 5px;
     box-shadow: 0px 10px 50px -10px #333;
     margin: 20px;

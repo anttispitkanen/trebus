@@ -33,6 +33,7 @@ module.exports = {
     "Kyttalankatu": "Kyttälänkatu",
     "Kaenkuja": "Käenkuja",
     "Karpankatu": "Kärpänkatu",
+    "Karkikuja": "Kärkikuja",
     "Lemminkaisenkatu": "Lemminkäisenkatu",
     "Lempaalantie": "Lempääläntie",
     "Leppakatu": "Leppäkatu",
