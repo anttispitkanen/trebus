@@ -1,14 +1,16 @@
 'use strict';
 
+const dotenv = require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
 const MongoClient = require('mongodb').MongoClient;
-const mongoURL = require('./private.js').mongoURL;
+//const mongoURL = require('./private.js').mongoURL;
 
-const APIkey = require('./private.js').APIkey;
-const APIpass = require('./private.js').APIpass;
+//const APIkey = require('./private.js').APIkey;
+//const APIpass = require('./private.js').APIpass;
 
 const request = require('request');
 const rp = require('request-promise');
@@ -24,7 +26,7 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
 }
 
-MongoClient.connect(mongoURL, (err, database) => {
+MongoClient.connect(process.env.MONGO_URL, (err, database) => {
     if (err) {
         return console.log(err);
     }
@@ -172,7 +174,7 @@ app.post('/find-address', (req, res) => {
     .then(() => {
 
         if (coords) {
-            let queryURL = `http://api.publictransport.tampere.fi/prod/?${APIkey}&${APIpass}&request=route&from=${coords}&to=${destCoords}&show=1&Detail=limited`;
+            let queryURL = `http://api.publictransport.tampere.fi/prod/?${process.env.API_KEY}&${process.env.API_PASS}&request=route&from=${coords}&to=${destCoords}&show=1&Detail=limited`;
 
             rp(queryURL, (error, response, body) => {
                 if (!error && response.statusCode === 200) {
@@ -225,7 +227,7 @@ function parseAPIurl(address) {
     }).join('');
 
     let fromPart = 'key=' + encodedAddress.trim().split(' ').join('+');
-    const fullAPIurl = defaultAPIurl + '&' + APIkey + '&' + APIpass + '&' + fromPart ;
+    const fullAPIurl = defaultAPIurl + '&' + process.env.API_KEY + '&' + process.env.API_PASS + '&' + fromPart ;
     //console.log(fullAPIurl);
     return fullAPIurl;
 }
