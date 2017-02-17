@@ -8,7 +8,8 @@ export default class MyLocation extends React.Component {
         this.state = {
             latitude: null,
             longitude: null,
-            startingAddress: null
+            startingAddress: null,
+            locatingFailed: false
         }
     }
 
@@ -19,7 +20,8 @@ export default class MyLocation extends React.Component {
             this.setState({
                 latitude: null,
                 longitude: null,
-                startingAddress: null
+                startingAddress: null,
+                locatingFailed: false
             })
 
             navigator.geolocation.getCurrentPosition(pos => {
@@ -60,7 +62,11 @@ export default class MyLocation extends React.Component {
                     console.log(e);
                 })
             }, failure => {
-                alert('something went wrong, probably with HTTPS ¯\\_(ツ)_/¯');
+                console.log(failure.message);
+                //alert('Something went wrong, unable to locate you ¯\\_(ツ)_/¯');
+                this.setState({
+                    locatingFailed: true
+                })
             })
 
         } else {
@@ -70,11 +76,67 @@ export default class MyLocation extends React.Component {
     }
 
 
+    manualAddress(event) {
+        event.preventDefault();
+
+        if (document.getElementById('address-from').value.length >= 3) {
+            this.setState({
+                startingAddress: document.getElementById('address-from').value,
+                locatingFailed: false
+            })
+
+            document.getElementById('address-from').value = '';
+        }
+    }
+
+
     componentDidMount() {
         this.locateMe();
     }
 
+
     render() {
+
+        if (this.state.locatingFailed) {
+            return(
+                <div>
+                    <div className="my-location">
+                        <i className="location-marker fa fa-map-marker" aria-hidden="true"></i>
+                        <ul>
+                            <li>Can't seem to locate you.</li>
+                            <li>Wanna tell me where you are?</li>
+                            <li>
+                                <form className="starting-address-form" onSubmit={this.manualAddress.bind(this)}>
+                                    <input className="address-from" id="address-from" type="text" placeholder="Your address"></input>
+                                    <input type="submit" value="Done" className="button" />
+                                </form>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                </div>
+            )
+        }
+
+        if (this.state.startingAddress && (this.state.latitude === null || this.state.longitude === null)) {
+            return(
+
+                <div>
+                    <div className="my-location">
+                        <i className="location-marker fa fa-map-marker" aria-hidden="true"></i>
+                        <ul>
+                            <li>Address: {this.state.startingAddress}</li>
+                        </ul>
+                        <div className="button" onClick={this.locateMe.bind(this)}>Locate me!</div>
+                    </div>
+
+                    <div>
+                        <Hotspots startingAddress={this.state.startingAddress} />
+                    </div>
+                </div>
+            )
+        }
 
         if (this.state.latitude === null || this.state.longitude === null) {
             //console.log('no coordinates yet');
@@ -102,6 +164,7 @@ export default class MyLocation extends React.Component {
                 </div>
             )
         }
+
 
         return(
 
