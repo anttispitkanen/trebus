@@ -63,7 +63,6 @@ export default class MyLocation extends React.Component {
                 })
             }, failure => {
                 console.log(failure.message);
-                //alert('Something went wrong, unable to locate you ¯\\_(ツ)_/¯');
                 this.setState({
                     locatingFailed: true
                 })
@@ -139,7 +138,6 @@ export default class MyLocation extends React.Component {
         }
 
         if (this.state.latitude === null || this.state.longitude === null) {
-            //console.log('no coordinates yet');
             return (
                 <div className="my-location">
                     <i className="location-marker location-spin fa fa-map-marker" aria-hidden="true"></i>
@@ -149,7 +147,6 @@ export default class MyLocation extends React.Component {
         }
 
         if (this.state.startingAddress === null) {
-            //console.log('no address yet');
             return(
                 <div>
                     <div className="my-location">

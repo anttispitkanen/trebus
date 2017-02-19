@@ -61,7 +61,6 @@ body {
 
 
 body {
-    /*background-color: #F8FF36;*/
     font-family: sans-serif;
     -webkit-font-smoothing: antialiased;
     box-sizing: border-box;
@@ -70,11 +69,9 @@ body {
 }
 
 .App {
-    /*background-color: #F8FF36;*/
     width: 100%;
     height: auto;
     min-height: 100vh;
-    /*color: #333;*/
     color: #1D1E18;
     background-color: #FBFEF9;
 }
@@ -82,18 +79,12 @@ body {
 .headline {
     text-align: center;
     padding: 30px 0 10px;
-    /*
-    background-image: linear-gradient(
-            #FFF399, #F8FF36
-        );
-    */
     box-shadow: 0px 0px 2px 0px #333;
     color: #FBFEF9;
     background-color: #A31621;
 }
 
 .headline h1 {
-    /*font-size: 30px;*/
     font-size: 45px;
     font-weight: bold;
     padding-bottom: 20px;
@@ -111,17 +102,15 @@ body {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    /*background-color: green;*/
 }
 
 .location-marker {
     font-size: 3rem;
     padding: 10px 10px;
-    /*animation: location-spin 1.5s linear infinite;*/
 }
 
 .location-marker.location-spin {
-    animation: location-spin 1.5s ease infinite;
+    animation: location-spin 1.5s ease-in-out infinite;
 }
 
 @keyframes location-spin {
@@ -175,14 +164,12 @@ input[type=text]:focus {
 .hotspots {
     display: flex;
     justify-content: center;
-    /*background-color: pink;*/
     width: auto;
     height: auto;
     flex-wrap: wrap;
 }
 
 .single-hotspot {
-    /*border: 3px solid black;*/
     background-color: #FBFEF9;
     border-radius: 5px;
     box-shadow: 0px 10px 50px -10px #333;
