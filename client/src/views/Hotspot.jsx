@@ -1,6 +1,8 @@
 import React from 'react';
 import Helpers from '../Helpers.js';
 
+let storage = window.localStorage;
+
 export default class Hotspot extends React.Component {
     constructor(props) {
         super(props);
@@ -48,6 +50,29 @@ export default class Hotspot extends React.Component {
         })
     }
 
+    deleteHotspot() {
+        //only delete after confiming
+        if (confirm(`Delete ${this.props.name}?`)) {
+            console.log('deleting ' + this.props.name + '! :DD');
+
+            let addresses = JSON.parse(storage.getItem('addresses'));
+
+            let indexOfHotspotToRemove = null;
+
+            addresses.forEach((obj, i) => {
+                if (obj.name === this.props.name) {
+                    indexOfHotspotToRemove = i;
+                }
+            })
+
+            addresses.splice(indexOfHotspotToRemove, 1);
+
+            storage.setItem('addresses', JSON.stringify(addresses));
+        }
+    }
+
+
+
     render() {
         if (this.state.thereIn === null || this.state.departureTime === null
             || this.state.busNumber === null || this.state.departAddress === null
@@ -70,6 +95,7 @@ export default class Hotspot extends React.Component {
             return(
                 <div className="single-hotspot">
                     <h3>{this.props.name}</h3>
+                        <i className="fa fa-times delete-hotspot" onClick={this.deleteHotspot.bind(this)}></i>
                         <ul>
                             <li>
                                 <span>{hoursNum}</span> {hours} <span>{minsNum}</span> {mins}
@@ -86,6 +112,7 @@ export default class Hotspot extends React.Component {
         return(
             <div className="single-hotspot">
                 <h3>{this.props.name}</h3>
+                    <i className="fa fa-times delete-hotspot" onClick={this.deleteHotspot.bind(this)}></i>
                     <ul>
                         <li>
                             <span>{hoursNum}</span> {hours} <span>{minsNum}</span> {mins}

@@ -59,11 +59,13 @@ body {
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-
-body {
-    font-family: sans-serif;
+* {
+	font-family: sans-serif;
     -webkit-font-smoothing: antialiased;
     box-sizing: border-box;
+}
+
+body {
     height: auto;
     margin: 0;
 }
@@ -93,6 +95,54 @@ body {
 .headline h4 {
     padding-bottom: 20px;
     font-style: italic;
+}
+
+.info-toggle {
+	position: absolute;
+	right: 15px;
+	top: 15px;
+	font-size: 1.4rem;
+	cursor: pointer;
+}
+
+.app-info {
+	position: fixed;
+	overflow: scroll;
+	top: 0px;
+	height: 100vh;
+	width: 100%;
+	background-color: #A31621;
+	z-index: 9;
+	padding: 20px;
+	box-sizing: border-box;
+}
+
+.app-info.hidden {
+	display: none;
+}
+
+.app-info .app-info-close {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	font-size: 1.5rem;
+}
+
+.app-info h2 {
+	font-size: 1.7rem;
+	padding: 20px;
+}
+
+.app-info p {
+	max-width: 450px;
+	margin: 0 auto;
+	text-align: justify;
+	padding: 10px;
+	line-height: 1.5rem;
+}
+
+.app-info a {
+	color: inherit;
 }
 
 .my-location {
@@ -183,6 +233,7 @@ input[type=text]:focus {
     text-align: center;
 	height: auto;
 	min-height: 186px;
+	position: relative;
 }
 
 .single-hotspot h3 {
@@ -207,6 +258,14 @@ input[type=text]:focus {
     font-size: 50px;
     font-weight: 300;
     padding: 0px;
+}
+
+.delete-hotspot {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	cursor: pointer;
+	font-size: 1.4rem;
 }
 
 img {

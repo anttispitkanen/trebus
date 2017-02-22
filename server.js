@@ -141,3 +141,26 @@ function parseAPIurl(address) {
     //console.log(fullAPIurl);
     return fullAPIurl;
 }
+
+
+
+app.post('/find-tre-coords', (req, res) => {
+    const inputAddress = req.body.address;
+    const queryURL = parseAPIurl(inputAddress);
+
+    let coords;
+
+    request(queryURL, (error, response, body) => {
+        if (!error && response.statusCode === 200) {
+            try {
+                coords = JSON.parse(body)[0].coords;
+            } catch (e) {
+                console.log('Error syötetyn hotspotin koordinaatteja hakiessa: ' + e);
+            }
+
+            res.send({
+                'coords': coords
+            })
+        }
+    })
+})
