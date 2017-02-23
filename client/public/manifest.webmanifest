@@ -1,0 +1,25 @@
+{
+    "name": "TreBus",
+    "short_name": "TreBus",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#FBFEF9",
+    "theme_color": "#A31621",
+    "description": "TreBus – The fastest bus app in Tampere",
+    "icons": [
+        {
+            "src": "trebus-16.png",
+            "sizes": "16x16",
+            "type": "image/png"
+        }, {
+            "src": "trebus-32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        }, {
+            "src": "trebus-200.png",
+            "sizes": "200x200",
+            "type": "image/png"
+        }],
+    "scope": "/"
+}
