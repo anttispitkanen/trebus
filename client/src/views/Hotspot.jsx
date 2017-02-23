@@ -68,6 +68,8 @@ export default class Hotspot extends React.Component {
             addresses.splice(indexOfHotspotToRemove, 1);
 
             storage.setItem('addresses', JSON.stringify(addresses));
+
+            this.props.triggerRender();
         }
     }
 

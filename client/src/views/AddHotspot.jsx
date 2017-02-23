@@ -1,6 +1,5 @@
 import React from 'react';
 
-//let fakeState = require('../FakeState.js');
 
 const storage = window.localStorage;
 
@@ -51,7 +50,7 @@ export default class AddHotspot extends React.Component {
             else { throw Error('error in client promise when fetching hotspot tre-coords')}
         })
         .then(data => {
-            console.log(data);
+            //console.log(data);
 
             //magic happens here
             if (data.coords) {
@@ -76,6 +75,8 @@ export default class AddHotspot extends React.Component {
             coords: coords
         })
         storage.setItem('addresses', JSON.stringify(addresses));
+
+        this.props.triggerRender();
     }
 
     cancel() {
