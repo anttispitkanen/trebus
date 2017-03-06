@@ -7,7 +7,7 @@ export default class Hotspot extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            thereIn: null,
+            thereIn: null, //this will be the durationTimeObject with fields for hoursNum, hoursText, minsNum, minsText
             departureTime: null,
             busNumber: null,
             departAddress: null,

@@ -42,16 +42,16 @@ export default class Helpers {
             durationTimeObject.minsNum = duration;
             durationTimeObject.minsText = 'min';
         } else {
-            var hours = Math.floor(duration / 60);
-            var mins = duration%60;
+            let hours = Math.floor(duration / 60);
+            let mins = duration%60;
             if (mins < 10) {
                 mins = '0' + mins;
             }
             //return hours + 'h ' + mins + ' minutes';
             durationTimeObject.hoursNum = hours;
             durationTimeObject.hoursText = 'h';
-            durationTimeObject.hoursNum = mins;
-            durationTimeObject.hoursNum = 'min';
+            durationTimeObject.minsNum = mins;
+            durationTimeObject.minsText = 'min';
         }
 
         return durationTimeObject;
