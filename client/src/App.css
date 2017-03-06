@@ -181,6 +181,10 @@ body {
 	text-align: center;
 }
 
+.my-location ul li {
+	text-align: left;
+}
+
 .my-location .button {
     border-radius: 5px;
     padding: 15px;
