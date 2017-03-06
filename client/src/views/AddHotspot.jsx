@@ -3,6 +3,7 @@ import React from 'react';
 
 const storage = window.localStorage;
 
+
 export default class AddHotspot extends React.Component {
 
     constructor(props) {
@@ -69,6 +70,8 @@ export default class AddHotspot extends React.Component {
 
     addToLocalstorage(name, address, coords) {
         let addresses = JSON.parse(storage.getItem('addresses'));
+        let newNumOfHotspots = addresses.length + 1;
+
         addresses.push({
             name: name,
             address: address,
@@ -76,7 +79,7 @@ export default class AddHotspot extends React.Component {
         })
         storage.setItem('addresses', JSON.stringify(addresses));
 
-        this.props.triggerRender();
+        this.props.countHotspots(newNumOfHotspots);
     }
 
     cancel() {

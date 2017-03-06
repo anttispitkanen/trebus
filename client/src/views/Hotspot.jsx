@@ -67,9 +67,11 @@ export default class Hotspot extends React.Component {
 
             addresses.splice(indexOfHotspotToRemove, 1);
 
+            let newNumOfHotspots = addresses.length;
+
             storage.setItem('addresses', JSON.stringify(addresses));
 
-            this.props.triggerRender();
+            this.props.countHotspots(newNumOfHotspots);
         }
     }
 

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // a file full of static helper functions that can be referenced from outside
 
 export default class Helpers {

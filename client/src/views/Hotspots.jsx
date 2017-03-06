@@ -13,14 +13,30 @@ export default class Test extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            unrenderedChanges: false
+            numHotspots: null
         }
     }
 
+    //if no addresses in storage, init empty storage
+    //count the number of hotspots
+    componentWillMount() {
+        let addresses = JSON.parse(storage.getItem('addresses'));
 
-    triggerRender() {
+        if (!addresses) {
+            //if no addresses, init with empty array
+            storage.setItem('addresses', JSON.stringify([]));
+        }
+
+        let numHotspots = JSON.parse(storage.getItem('addresses')).length;
+
         this.setState({
-            unrenderedChanges: !this.state.unrenderedChanges
+            numHotspots: numHotspots
+        })
+    }
+
+    countHotspots(newNum) {
+        this.setState({
+            numHotspots: newNum
         })
     }
 
@@ -29,31 +45,41 @@ export default class Test extends React.Component {
 
         let addresses = JSON.parse(storage.getItem('addresses'));
 
-        if (!addresses) {
-            storage.setItem('addresses', JSON.stringify([]));
-
+        if (this.state.numHotspots < 8) {
             return(
                 <div className="hotspots">
-                    <AddHotspot triggerRender={this.triggerRender.bind(this)}/>
+
+                    {addresses.map(address => {
+                        return (
+                            <Hotspot name={address.name}
+                                    coords={address.coords}
+                                    startingAddress={this.props.startingAddress}
+                                    key={address.coords}
+                                    countHotspots={this.countHotspots.bind(this)} />
+                        )
+                    })}
+
+                    <AddHotspot countHotspots={this.countHotspots.bind(this)}/>
+                </div>
+            )
+
+        } else {
+            return(
+                <div className="hotspots">
+
+                    {addresses.map(address => {
+                        return (
+                            <Hotspot name={address.name}
+                                    coords={address.coords}
+                                    startingAddress={this.props.startingAddress}
+                                    key={address.coords}
+                                    countHotspots={this.countHotspots.bind(this)} />
+                        )
+                    })}
                 </div>
             )
         }
 
-        return(
-            <div className="hotspots">
 
-                {addresses.map(address => {
-                    return (
-                        <Hotspot name={address.name}
-                                coords={address.coords}
-                                startingAddress={this.props.startingAddress}
-                                key={address.coords}
-                                triggerRender={this.triggerRender.bind(this)} />
-                    )
-                })}
-
-                <AddHotspot triggerRender={this.triggerRender.bind(this)}/>
-            </div>
-        )
     }
 }
