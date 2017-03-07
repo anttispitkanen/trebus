@@ -60,15 +60,27 @@ export default class Helpers {
     }
 
     static parseStartingPoint(routeDataObject) {
-        var startingPoint;
+        let startingPoint;
+        let stopCode;
+
+        //test if the first leg's last loc is a stop or not
+        //if it isn't, the whole thing is just walking
         if (routeDataObject.legs[0].locs.slice(-1).pop().name) {
+
+            //assign the name of the stop (like "Sammonkatu 66")
             startingPoint = routeDataObject.legs[0].locs.slice(-1).pop().name;
+            //assign the stop's code
+            stopCode = routeDataObject.legs[0].locs.slice(-1).pop().code;
+
         } else {
             return 'Just walk :DD';
         }
 
-        var startingPointQueryString = startingPoint.split(' ').join('+');
-        var linkToLissu = `http://lissu.tampere.fi/?mobile=1&key=${startingPointQueryString}`;
+        //console.log(routeDataObject);
+        //console.log(routeDataObject.legs[0].locs.slice(-1).pop().code);
+
+        let startingPointQueryString = startingPoint.split(' ').join('+');
+        let linkToLissu = `http://lissu.tampere.fi/?mobile=1&key=${startingPointQueryString}&stop=${stopCode}`;
 
         return({
             'departStop': startingPoint,

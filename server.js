@@ -74,6 +74,10 @@ app.post('/locate-me', (req, res) => {
 })
 
 
+/*
+* Receives a route query with starting point address and destination (hotspot) coordinates
+* Returns the route info as a JSON data object
+*/
 app.post('/find-address', (req, res) => {
     const startAddress = req.body.address;
     const destCoords = req.body.coords;
