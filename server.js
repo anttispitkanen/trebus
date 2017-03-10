@@ -11,7 +11,7 @@ const MongoClient = require('mongodb').MongoClient;
 const request = require('request');
 const rp = require('request-promise');
 
-const streetnames = require('./streetnames.js');
+const scandinavianAddresses = require('./script/scandinavianAddresses');
 
 let db;
 
@@ -56,8 +56,8 @@ app.post('/locate-me', (req, res) => {
             const jsonbody = JSON.parse(body);
             let correctStreetname;
 
-            if (streetnames.hasOwnProperty(jsonbody.staddress)) {
-                correctStreetname = streetnames[jsonbody.staddress];
+            if (scandinavianAddresses.hasOwnProperty(jsonbody.staddress)) {
+                correctStreetname = scandinavianAddresses[jsonbody.staddress];
             } else {
                 correctStreetname = jsonbody.staddress;
             }
