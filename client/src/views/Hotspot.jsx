@@ -47,7 +47,6 @@ export default class Hotspot extends React.Component {
                     busNumber: Helpers.parseLineNum(routeData),
                     departAddress: Helpers.parseStartingPoint(routeData),
                     arrivalTime: Helpers.parseArrival(routeData),
-                    //FIXME: add distance
                     distance: Helpers.parseDistance(routeData)
                 })
 

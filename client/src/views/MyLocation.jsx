@@ -38,7 +38,7 @@ export default class MyLocation extends React.Component {
                 })
 
                 //this one for debugging: set the address manually
-                this.setState({ locatingFailed: true })
+                //this.setState({ locatingFailed: true })
 
                 fetch('locate-me', {
                     method: 'post',
