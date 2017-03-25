@@ -37,6 +37,9 @@ export default class MyLocation extends React.Component {
                     longitude: pos.coords.longitude
                 })
 
+                //this one for debugging: set the address manually
+                this.setState({ locatingFailed: true })
+
                 fetch('locate-me', {
                     method: 'post',
                     headers: {
@@ -52,8 +55,6 @@ export default class MyLocation extends React.Component {
                     else { throw Error('error in client promise :DD')}
                 })
                 .then(data => {
-                    //console.log(data);
-
                     this.setState({
                         startingAddress: data.street + ' ' + data.house
                     });

@@ -40,7 +40,6 @@ export default class Helpers {
         }
 
         if (duration <= 60) {
-            //return duration + ' minutes';
             durationTimeObject.minsNum = duration;
             durationTimeObject.minsText = 'min';
         } else {
@@ -49,7 +48,6 @@ export default class Helpers {
             if (mins < 10) {
                 mins = '0' + mins;
             }
-            //return hours + 'h ' + mins + ' minutes';
             durationTimeObject.hoursNum = hours;
             durationTimeObject.hoursText = 'h';
             durationTimeObject.minsNum = mins;
@@ -132,6 +130,16 @@ export default class Helpers {
 
     static secondsToMinutes(seconds) {
         return seconds/60;
+    }
+
+    //takes the routeDataObject and returns the distance as "X.X km"
+    static parseDistance(routeDataObject) {
+        let distance = routeDataObject.length;
+
+        let km = Math.floor(distance/ 1000);
+        let m = Math.round(distance % 1000 / 100);
+
+        return `${km}.${m} km`;
     }
 
 }

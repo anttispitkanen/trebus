@@ -11,7 +11,8 @@ export default class Hotspot extends React.Component {
             departureTime: null,
             busNumber: null,
             departAddress: null,
-            arrivalTime: null
+            arrivalTime: null,
+            distance: null
         }
     }
 
@@ -34,7 +35,9 @@ export default class Hotspot extends React.Component {
             if (data.error) {
                 alert(data.error);
             } else {
+                //This one for debugging: log the route data
                 //console.log(data[0][0]);
+
                 let routeData = data[0][0];
 
                 //here we have the route data that we need to parse and insert into state
@@ -43,7 +46,9 @@ export default class Hotspot extends React.Component {
                     departureTime: Helpers.parseDeparture(routeData),
                     busNumber: Helpers.parseLineNum(routeData),
                     departAddress: Helpers.parseStartingPoint(routeData),
-                    arrivalTime: Helpers.parseArrival(routeData)
+                    arrivalTime: Helpers.parseArrival(routeData),
+                    //FIXME: add distance
+                    distance: Helpers.parseDistance(routeData)
                 })
 
             }
@@ -78,6 +83,7 @@ export default class Hotspot extends React.Component {
 
 
     render() {
+        //display spinning wheel until the data is fetced and parsed
         if (this.state.thereIn === null || this.state.departureTime === null
             || this.state.busNumber === null || this.state.departAddress === null
             || this.state.arrivalTime === null) {
@@ -90,11 +96,13 @@ export default class Hotspot extends React.Component {
             )
         }
 
+
         const hoursNum = this.state.thereIn.hoursNum;
         const hours = this.state.thereIn.hoursText;
         const minsNum = this.state.thereIn.minsNum;
         const mins = this.state.thereIn.minsText;
 
+        //when readu and the advice is to walk, there is no link to the bus stop
         if (!this.state.departAddress.infoLink) {
             return(
                 <div className="single-hotspot">
@@ -108,11 +116,13 @@ export default class Hotspot extends React.Component {
                             <li>Bus number: {this.state.busNumber}</li>
                             <li>From: {this.state.departAddress}</li>
                             <li>Arrival time: {this.state.arrivalTime}</li>
+                            <li>Distance: {this.state.distance}</li>
                         </ul>
                 </div>
             )
         }
 
+        //when ready and there is a link to the bus stop (Lissu)
         return(
             <div className="single-hotspot">
                 <h3>{this.props.name}</h3>
@@ -128,6 +138,7 @@ export default class Hotspot extends React.Component {
                                 </a>
                         </li>
                         <li>Arrival time: {this.state.arrivalTime}</li>
+                        <li>Distance: {this.state.distance}</li>
                     </ul>
             </div>
         )
