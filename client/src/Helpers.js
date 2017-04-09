@@ -42,6 +42,10 @@ export default class Helpers {
         if (duration <= 60) {
             durationTimeObject.minsNum = duration;
             durationTimeObject.minsText = 'min';
+
+        } else if (duration >= 180) {
+            durationTimeObject.minsText = 'It would take over 3 hours :D'
+
         } else {
             let hours = Math.floor(duration / 60);
             let mins = duration%60;

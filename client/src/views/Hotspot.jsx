@@ -36,7 +36,7 @@ export default class Hotspot extends React.Component {
                 alert(data.error);
             } else {
                 //This one for debugging: log the route data
-                //console.log(data[0][0]);
+                console.log(data[0][0]);
 
                 let routeData = data[0][0];
 

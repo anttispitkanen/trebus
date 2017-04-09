@@ -86,8 +86,12 @@ app.post('/find-address', (req, res) => {
 
     let coords;
 
+    //FIXME: this is done unnecessarily for every route
+    //instead do it when locating the user, return the tre-coords to client
+    //and do the individual routing with those
+    
+    //first fetch the
     rp(searchURL, (error, response, body) => {
-        //console.log('päästiin ekaan requestiin :D');
         if (!error && response.statusCode === 200) {
             try {
                 coords = JSON.parse(body)[0].coords;
