@@ -6,14 +6,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
-// const MongoClient = require('mongodb').MongoClient;
-
 const request = require('request');
 const rp = require('request-promise');
 
 const scandinavianAddresses = require('./script/scandinavianAddresses');
-
-let db;
 
 app.set('port', (process.env.PORT || 3001));
 app.use(express.static(__dirname + '/public'));
@@ -22,16 +18,6 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
 }
 
-// MongoClient.connect(process.env.MONGO_URL, (err, database) => {
-//     if (err) {
-//         return console.log(err);
-//     }
-//
-//     db = database;
-//     app.listen(app.get('port'), () => {
-//         console.log('listening on ' + app.get('port'));
-//     })
-// })
 
 app.listen(app.get('port'), () => {
     console.log('listening on ' + app.get('port'));
@@ -131,25 +117,8 @@ app.post('/find-address', (req, res) => {
 
 function parseAPIurl(address) {
     const defaultAPIurl = 'http://api.publictransport.tampere.fi/prod/?request=geocode&format=json&cities=tampere';
-
-    //manually encoding address to url suitable
-    // ä to %C3%A4
-    // ö to %C3%B6
-    // å to %C3%A5
-    let encodedAddress = address.toLowerCase().split('').map(letter => {
-        if (letter === 'ä') {
-            return '%C3%A4';
-        } else if (letter === 'ö') {
-            return '%C3%B6';
-        } else if (letter === 'å') {
-            return '%C3%A5';
-        } else {
-            return letter; //if no encoding needed for the character
-        }
-    }).join('');
-
-    let fromPart = 'key=' + encodedAddress.trim().split(' ').join('+');
-    const fullAPIurl = defaultAPIurl + '&' + process.env.API_KEY + '&' + process.env.API_PASS + '&' + fromPart ;
+    let fromPart = 'key=' + encodeURIComponent(address);
+    const fullAPIurl = defaultAPIurl + '&' + process.env.API_KEY + '&' + process.env.API_PASS + '&' + fromPart;
     //console.log(fullAPIurl);
     return fullAPIurl;
 }

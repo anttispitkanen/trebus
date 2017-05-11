@@ -95,6 +95,7 @@ body {
 .headline h4 {
     padding-bottom: 20px;
     font-style: italic;
+	font-weight: 200;
 }
 
 .info-toggle {
