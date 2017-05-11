@@ -115,6 +115,9 @@ body {
 	z-index: 9;
 	padding: 20px;
 	box-sizing: border-box;
+	font-weight: 200;
+	background-color: #FBFEF9;
+	color: #A31621;
 }
 
 .app-info.hidden {
@@ -132,6 +135,8 @@ body {
 .app-info h2 {
 	font-size: 1.7rem;
 	padding: 20px;
+	margin-bottom: 30px;
+	margin-top: 20px;
 }
 
 .app-info p {
@@ -140,6 +145,7 @@ body {
 	text-align: justify;
 	padding: 10px;
 	line-height: 1.5rem;
+
 }
 
 .app-info a {

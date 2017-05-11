@@ -6,7 +6,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
-const MongoClient = require('mongodb').MongoClient;
+// const MongoClient = require('mongodb').MongoClient;
 
 const request = require('request');
 const rp = require('request-promise');
@@ -22,15 +22,19 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
 }
 
-MongoClient.connect(process.env.MONGO_URL, (err, database) => {
-    if (err) {
-        return console.log(err);
-    }
+// MongoClient.connect(process.env.MONGO_URL, (err, database) => {
+//     if (err) {
+//         return console.log(err);
+//     }
+//
+//     db = database;
+//     app.listen(app.get('port'), () => {
+//         console.log('listening on ' + app.get('port'));
+//     })
+// })
 
-    db = database;
-    app.listen(app.get('port'), () => {
-        console.log('listening on ' + app.get('port'));
-    })
+app.listen(app.get('port'), () => {
+    console.log('listening on ' + app.get('port'));
 })
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -89,7 +93,7 @@ app.post('/find-address', (req, res) => {
     //FIXME: this is done unnecessarily for every route
     //instead do it when locating the user, return the tre-coords to client
     //and do the individual routing with those
-    
+
     //first fetch the
     rp(searchURL, (error, response, body) => {
         if (!error && response.statusCode === 200) {
