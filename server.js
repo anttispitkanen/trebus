@@ -111,48 +111,20 @@ app.set('view engine', 'ejs');
 //
 // })
 
-app.post('/find-address', (req, res) => {
-    const startAddress = req.body.address;
+app.post('/route', async (req, res) => {
+    // const startAddress = req.body.address;
+    const startCoords = req.body.startingTreCoords;
     const destCoords = req.body.coords;
+    let queryURL = `http://api.publictransport.tampere.fi/prod/?${process.env.API_KEY}&${process.env.API_PASS}&request=route&from=${startCoords}&to=${destCoords}&show=1&Detail=limited`;
 
-    let searchURL = parseAPIurl(startAddress);
-
-    let coords;
-
-    //FIXME: this is done unnecessarily for every route
-    //instead do it when locating the user, return the tre-coords to client
-    //and do the individual routing with those
-
-    //first fetch the
-    rp(searchURL, (error, response, body) => {
-        if (!error && response.statusCode === 200) {
-            try {
-                coords = JSON.parse(body)[0].coords;
-            } catch (e) {
-                console.log('Error ensimmäisessä request-promisessa: ' + e);
-            }
-
-            return coords;
-        }
-    })
-    .then(() => {
-
-        if (coords) {
-            let queryURL = `http://api.publictransport.tampere.fi/prod/?${process.env.API_KEY}&${process.env.API_PASS}&request=route&from=${coords}&to=${destCoords}&show=1&Detail=limited`;
-
-            rp(queryURL, (error, response, body) => {
-                if (!error && response.statusCode === 200) {
-                    res.send(body);
-                }
-            })
-        } else {
-            res.send({error: 'something went wrong with the request on server ¯\\_(ツ)_/¯'})
-        }
-
-    })
-    .catch(e => {
+    try {
+        const response = await axios.get(queryURL);
+        res.send(response.data);
+    } catch (e) {
         console.log(e);
-    })
+    }
+
+
 
 })
 

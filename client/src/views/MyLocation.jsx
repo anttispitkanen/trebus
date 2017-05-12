@@ -57,8 +57,6 @@ export default class MyLocation extends React.Component {
                     else { throw Error('error in client promise :DD')}
                 })
                 .then(data => {
-                    console.log(data.street + ' ' + data.house);
-                    console.log(data.treCoords);
                     this.setState({
                         startingAddress: data.street + ' ' + data.house,
                         startingTreCoords: data.treCoords
@@ -105,9 +103,9 @@ export default class MyLocation extends React.Component {
         if (this.state.locatingFailed) {
             return(
                 <div>
-                    <div className="my-location">
+                    <div className="my-location-cannot-locate">
                         <i className="location-marker fa fa-map-marker" aria-hidden="true"></i>
-                        <ul>
+                        <ul className="cannot-locate">
                             <li>Can't seem to locate you.</li>
                             <li>Wanna tell me where you are?</li>
                             <li>

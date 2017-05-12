@@ -17,13 +17,13 @@ export default class Hotspot extends React.Component {
     }
 
     componentDidMount() {
-        fetch('find-address', {
+        fetch('route', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                'address': this.props.startingAddress,
+                'startingTreCoords': this.props.startingTreCoords,
                 'coords': this.props.coords
             })
         })
