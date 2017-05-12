@@ -1,5 +1,7 @@
 'use strict';
 
+
+
 const dotenv = require('dotenv').config();
 
 const express = require('express');
@@ -8,6 +10,7 @@ const app = express();
 
 const request = require('request');
 const rp = require('request-promise');
+const axios = require('axios');
 
 const scandinavianAddresses = require('./script/scandinavianAddresses');
 
@@ -29,45 +32,85 @@ app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 
 
-app.post('/locate-me', (req, res) => {
-    const latitude = req.body.latitude;
-    const longitude = req.body.longitude;
-
-    //console.log('lat: ' + latitude);
-    //console.log('lng: ' + longitude);
-
-    const defaultAPIurl = 'https://geocode.xyz/';
-    const queryUrl = `${defaultAPIurl}${latitude},${longitude}?json=1`;
-    //console.log('queryUrl: ' + queryUrl);
-
-    request(queryUrl, (error, response, body) => {
-        if (!error && response.statusCode === 200) {
-            //console.log(body);
-            const jsonbody = JSON.parse(body);
-            let correctStreetname;
-
-            if (scandinavianAddresses.hasOwnProperty(jsonbody.staddress)) {
-                correctStreetname = scandinavianAddresses[jsonbody.staddress];
-            } else {
-                correctStreetname = jsonbody.staddress;
-            }
-
-            //console.log('street: ' + correctStreetname);
-            //console.log('house: ' + jsonbody.stnumber);
-            res.send({
-                'street': correctStreetname,
-                'house': jsonbody.stnumber
-            })
-        }
-    })
-
-})
+// app.post('/locate-me', (req, res) => {
+//     const latitude = req.body.latitude;
+//     const longitude = req.body.longitude;
+//
+//     const defaultAPIurl = 'https://geocode.xyz/';
+//     const queryUrl = `${defaultAPIurl}${latitude},${longitude}?json=1`;
+//     //console.log('queryUrl: ' + queryUrl);
+//
+//     request(queryUrl, (error, response, body) => {
+//         if (!error && response.statusCode === 200) {
+//             //console.log(body);
+//             const jsonbody = JSON.parse(body);
+//             let correctStreetname;
+//
+//             if (scandinavianAddresses.hasOwnProperty(jsonbody.staddress)) {
+//                 correctStreetname = scandinavianAddresses[jsonbody.staddress];
+//             } else {
+//                 correctStreetname = jsonbody.staddress;
+//             }
+//             //console.log('street: ' + correctStreetname);
+//             //console.log('house: ' + jsonbody.stnumber);
+//             res.send({
+//                 'street': correctStreetname,
+//                 'house': jsonbody.stnumber
+//             })
+//         }
+//     })
+// })
 
 
 /*
 * Receives a route query with starting point address and destination (hotspot) coordinates
 * Returns the route info as a JSON data object
 */
+// app.post('/find-address', (req, res) => {
+//     const startAddress = req.body.address;
+//     const destCoords = req.body.coords;
+//
+//     let searchURL = parseAPIurl(startAddress);
+//
+//     let coords;
+//
+//     //FIXME: this is done unnecessarily for every route
+//     //instead do it when locating the user, return the tre-coords to client
+//     //and do the individual routing with those
+//
+//     //first fetch the
+//     rp(searchURL, (error, response, body) => {
+//         if (!error && response.statusCode === 200) {
+//             try {
+//                 coords = JSON.parse(body)[0].coords;
+//             } catch (e) {
+//                 console.log('Error ensimmäisessä request-promisessa: ' + e);
+//             }
+//
+//             return coords;
+//         }
+//     })
+//     .then(() => {
+//
+//         if (coords) {
+//             let queryURL = `http://api.publictransport.tampere.fi/prod/?${process.env.API_KEY}&${process.env.API_PASS}&request=route&from=${coords}&to=${destCoords}&show=1&Detail=limited`;
+//
+//             rp(queryURL, (error, response, body) => {
+//                 if (!error && response.statusCode === 200) {
+//                     res.send(body);
+//                 }
+//             })
+//         } else {
+//             res.send({error: 'something went wrong with the request on server ¯\\_(ツ)_/¯'})
+//         }
+//
+//     })
+//     .catch(e => {
+//         console.log(e);
+//     })
+//
+// })
+
 app.post('/find-address', (req, res) => {
     const startAddress = req.body.address;
     const destCoords = req.body.coords;
@@ -113,6 +156,45 @@ app.post('/find-address', (req, res) => {
 
 })
 
+app.post('/locate-me', async (req, res) => {
+    const latitude = req.body.latitude;
+    const longitude = req.body.longitude;
+
+    const defaultAPIurl = 'https://geocode.xyz/';
+    const queryUrl = `${defaultAPIurl}${latitude},${longitude}?json=1`;
+
+    try {
+        const response = await axios.get(queryUrl);
+        const data = response.data;
+
+        let correctStreetname;
+
+        if (scandinavianAddresses.hasOwnProperty(data.staddress)) {
+            correctStreetname = scandinavianAddresses[data.staddress];
+        } else {
+            correctStreetname = data.staddress;
+        }
+
+        const address = correctStreetname + ' ' + data.stnumber;
+        const searchURL = parseAPIurl(address);
+
+        const treCoordsResponse = await axios.get(searchURL);
+        // console.log(treCoordsResponse.data[0].coords);
+        const treCoords = treCoordsResponse.data[0].coords;
+
+
+        res.send({
+            'street': correctStreetname,
+            'house': data.stnumber,
+            'treCoords': treCoords
+        })
+
+
+    } catch (e) {
+        console.log(e);
+    }
+
+})
 
 
 function parseAPIurl(address) {

@@ -9,6 +9,7 @@ export default class MyLocation extends React.Component {
             latitude: null,
             longitude: null,
             startingAddress: null,
+            startingTreCoords: null,
             locatingFailed: false
         }
     }
@@ -21,6 +22,7 @@ export default class MyLocation extends React.Component {
                 latitude: null,
                 longitude: null,
                 startingAddress: null,
+                startingTreCoords: null,
                 locatingFailed: false
             })
 
@@ -37,8 +39,8 @@ export default class MyLocation extends React.Component {
                     longitude: pos.coords.longitude
                 })
 
-                //this one for debugging: set the address manually
-                this.setState({ locatingFailed: true })
+                // this one for debugging: set the address manually
+                // this.setState({ locatingFailed: true })
 
                 fetch('locate-me', {
                     method: 'post',
@@ -55,8 +57,11 @@ export default class MyLocation extends React.Component {
                     else { throw Error('error in client promise :DD')}
                 })
                 .then(data => {
+                    console.log(data.street + ' ' + data.house);
+                    console.log(data.treCoords);
                     this.setState({
-                        startingAddress: data.street + ' ' + data.house
+                        startingAddress: data.street + ' ' + data.house,
+                        startingTreCoords: data.treCoords
                     });
                 })
                 .catch(e => {
@@ -178,7 +183,10 @@ export default class MyLocation extends React.Component {
                 </div>
 
                 <div>
-                    <Hotspots startingAddress={this.state.startingAddress} />
+                    <Hotspots
+                        startingAddress={this.state.startingAddress}
+                        startingTreCoords={this.state.startingTreCoords}
+                    />
                 </div>
             </div>
         )
