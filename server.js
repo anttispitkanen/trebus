@@ -72,20 +72,36 @@ app.post('/locate-me', async (req, res) => {
         const address = correctStreetname + ' ' + data.stnumber;
         const searchURL = parseAPIurl(address);
 
-        const treCoordsResponse = await axios.get(searchURL);
-        // console.log(treCoordsResponse.data[0].coords);
-        const treCoords = treCoordsResponse.data[0].coords;
+        try {
+            const treCoordsResponse = await axios.get(searchURL);
+            // console.log('treCoords: ' + treCoordsResponse.data[0].coords);
+            const treCoords = treCoordsResponse.data[0].coords;
 
+            if (treCoords) {
+                res.send({
+                    'street': correctStreetname,
+                    'house': data.stnumber,
+                    'treCoords': treCoords
+                })
+            } else {
+                res.send({
+                    'street': correctStreetname,
+                    'house': data.stnumber,
+                    'error': 'Could not locate you'
+                })
+            }
+        } catch (e) {
+            console.log('lol ei onnistunut noilla koordinaateilla');
+        }
 
-        res.send({
-            'street': correctStreetname,
-            'house': data.stnumber,
-            'treCoords': treCoords
-        })
 
 
     } catch (e) {
-        console.log(e);
+        console.log('************* ERROR *************');
+        // console.log(e);
+        res.send({
+            'error': 'Could not locate you'
+        })
     }
 
 })

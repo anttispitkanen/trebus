@@ -75,18 +75,22 @@ export default class Helpers {
             stopCode = routeDataObject.legs[0].locs.slice(-1).pop().code;
 
         } else {
-            return 'Just walk :DD';
+            return({
+                'justWalk': 'Just walk :DD',
+                'departStop': null,
+                'linkToLissu': null
+            })
         }
 
         //console.log(routeDataObject);
         //console.log(routeDataObject.legs[0].locs.slice(-1).pop().code);
-
         let startingPointQueryString = startingPoint.split(' ').join('+');
         let linkToLissu = `http://lissu.tampere.fi/?mobile=1&key=${startingPointQueryString}&stop=${stopCode}`;
 
         return({
+            'justWalk': null,
             'departStop': startingPoint,
-            'infoLink': linkToLissu
+            'linkToLissu': linkToLissu
         })
     }
 

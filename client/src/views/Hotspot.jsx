@@ -1,5 +1,6 @@
 import React from 'react';
 import Helpers from '../Helpers.js';
+import StopInfo from './StopInfo.jsx';
 
 let storage = window.localStorage;
 
@@ -36,7 +37,7 @@ export default class Hotspot extends React.Component {
                 alert(data.error);
             } else {
                 //This one for debugging: log the route data
-                console.log(data[0][0]);
+                // console.log(data[0][0]);
 
                 let routeData = data[0][0];
 
@@ -57,7 +58,7 @@ export default class Hotspot extends React.Component {
     deleteHotspot() {
         //only delete after confiming
         if (confirm(`Delete ${this.props.name}?`)) {
-            console.log('deleting ' + this.props.name + '! :DD');
+            // console.log('deleting ' + this.props.name + '! :DD');
 
             let addresses = JSON.parse(storage.getItem('addresses'));
 
@@ -101,30 +102,13 @@ export default class Hotspot extends React.Component {
         const minsNum = this.state.thereIn.minsNum;
         const mins = this.state.thereIn.minsText;
 
-        //when readu and the advice is to walk, there is no link to the bus stop
-        if (!this.state.departAddress.infoLink) {
-            return(
-                <div className="single-hotspot">
-                    <h3>{this.props.name}</h3>
-                        <i className="fa fa-times delete-hotspot" onClick={this.deleteHotspot.bind(this)}></i>
-                        <ul>
-                            <li>
-                                <span>{hoursNum}</span> {hours} <span>{minsNum}</span> {mins}
-                            </li>
-                            <li>Departure time: {this.state.departureTime}</li>
-                            <li>Bus number: {this.state.busNumber}</li>
-                            <li>From: {this.state.departAddress}</li>
-                            <li>Arrival time: {this.state.arrivalTime}</li>
-                            <li>Distance: {this.state.distance}</li>
-                        </ul>
-                </div>
-            )
-        }
 
-        //when ready and there is a link to the bus stop (Lissu)
+
+        //when ready
         return(
             <div className="single-hotspot">
                 <h3>{this.props.name}</h3>
+                    <i className="arrow-up fa fa-chevron-up"></i>
                     <i className="fa fa-times delete-hotspot" onClick={this.deleteHotspot.bind(this)}></i>
                     <ul>
                         <li>
@@ -132,10 +116,7 @@ export default class Hotspot extends React.Component {
                         </li>
                         <li>Departure time: {this.state.departureTime}</li>
                         <li>Bus number: {this.state.busNumber}</li>
-                        <li>From: <a href={this.state.departAddress.infoLink} target="_blank">
-                                    {this.state.departAddress.departStop}
-                                </a>
-                        </li>
+                        <StopInfo {...this.state.departAddress}/>
                         <li>Arrival time: {this.state.arrivalTime}</li>
                         <li>Distance: {this.state.distance}</li>
                     </ul>
