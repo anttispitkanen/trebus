@@ -43,30 +43,26 @@ export default class Test extends React.Component {
 
     moveUp(index) {
         if (index > 0) {
-            let addresses = JSON.parse(storage.getItem('addresses'));
-            let address = addresses.splice(index, 1)[0];
-            addresses.splice(index - 1, 0, address);
-            storage.setItem('addresses', JSON.stringify(addresses));
-
-            //hack to force re-render
-            this.setState({
-                numHotspots: this.state.numHotspots
-            })
+            this.move(index, index-1);
         }
     }
 
     moveDown(index) {
         if (index < JSON.parse(storage.getItem('addresses')).length - 1) {
-            let addresses = JSON.parse(storage.getItem('addresses'));
-            let address = addresses.splice(index, 1)[0];
-            addresses.splice(index + 1, 0, address);
-            storage.setItem('addresses', JSON.stringify(addresses));
-
-            //hack to force re-render
-            this.setState({
-                numHotspots: this.state.numHotspots
-            })
+            this.move(index, index+1);
         }
+    }
+
+    move(oldPos, newPos) {
+        let addresses = JSON.parse(storage.getItem('addresses'));
+        let address = addresses.splice(oldPos, 1)[0];
+        addresses.splice(newPos, 0, address);
+        storage.setItem('addresses', JSON.stringify(addresses));
+
+        //hack to force re-render
+        this.setState({
+            numHotspots: this.state.numHotspots
+        })
     }
 
 
