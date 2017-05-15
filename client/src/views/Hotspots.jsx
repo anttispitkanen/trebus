@@ -41,6 +41,35 @@ export default class Test extends React.Component {
     }
 
 
+    moveUp(index) {
+        if (index > 0) {
+            let addresses = JSON.parse(storage.getItem('addresses'));
+            let address = addresses.splice(index, 1)[0];
+            addresses.splice(index - 1, 0, address);
+            storage.setItem('addresses', JSON.stringify(addresses));
+
+            //hack to force re-render
+            this.setState({
+                numHotspots: this.state.numHotspots
+            })
+        }
+    }
+
+    moveDown(index) {
+        if (index < JSON.parse(storage.getItem('addresses')).length - 1) {
+            let addresses = JSON.parse(storage.getItem('addresses'));
+            let address = addresses.splice(index, 1)[0];
+            addresses.splice(index + 1, 0, address);
+            storage.setItem('addresses', JSON.stringify(addresses));
+
+            //hack to force re-render
+            this.setState({
+                numHotspots: this.state.numHotspots
+            })
+        }
+    }
+
+
     render() {
 
         let addresses = JSON.parse(storage.getItem('addresses'));
@@ -56,7 +85,10 @@ export default class Test extends React.Component {
                                     startingAddress={this.props.startingAddress}
                                     startingTreCoords={this.props.startingTreCoords}
                                     key={address.coords}
-                                    countHotspots={this.countHotspots.bind(this)} />
+                                    countHotspots={this.countHotspots.bind(this)}
+                                    moveUp={this.moveUp.bind(this)}
+                                    moveDown={this.moveDown.bind(this)}
+                            />
                         )
                     })}
 
@@ -75,7 +107,10 @@ export default class Test extends React.Component {
                                     startingAddress={this.props.startingAddress}
                                     startingTreCoords={this.props.startingTreCoords}
                                     key={address.coords}
-                                    countHotspots={this.countHotspots.bind(this)} />
+                                    countHotspots={this.countHotspots.bind(this)}
+                                    moveUp={this.moveUp.bind(this)}
+                                    moveDown={this.moveDown.bind(this)}
+                             />
                         )
                     })}
                 </div>

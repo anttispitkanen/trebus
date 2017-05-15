@@ -115,26 +115,27 @@ export default class Helpers {
             departure = routeDataObject.legs[0].locs[0].depTime;
         }
 
-        return departure.substr(8, 2) + '.' + departure.substr(10, 2);
+        return 'Departure time: ' + departure.substr(8, 2) + '.' + departure.substr(10, 2);
     }
 
     static parseLineNum(routeDataObject) {
-        var lineNum;
+        let lineNum;
 
         if (routeDataObject.legs[0].type === 'walk') {
             if (routeDataObject.legs.length > 1) {
                 lineNum = routeDataObject.legs[1].code;
             } else {
-                lineNum = 'Just walk :DD';
+                lineNum = null;
             }
         } else if (routeDataObject.legs[0].code === '1') {
             lineNum = routeDataObject.legs[0].code;
         } else {
-            lineNum = 'Just walk :DD';
+            lineNum = null;
         }
 
-        return lineNum;
+        return lineNum ? ('Bus number: ' + lineNum) : 'Just walk :DD';
     }
+
 
     static secondsToMinutes(seconds) {
         return seconds/60;

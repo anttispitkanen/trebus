@@ -331,6 +331,14 @@ input[type=text]:focus {
 	font-size: 1.4rem;
 }
 
+.arrow-down {
+	position: absolute;
+	bottom: 15px;
+	left: 15px;
+	cursor: pointer;
+	font-size: 1.4rem;
+}
+
 img {
     height: 100px;
     width: 100px;

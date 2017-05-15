@@ -81,11 +81,34 @@ export default class Hotspot extends React.Component {
     }
 
 
+    moveUp() {
+        let addresses = JSON.parse(storage.getItem('addresses'));
+        let index = null;
+        addresses.forEach((obj, i) => {
+            if (obj.name === this.props.name) {
+                index = i;
+            }
+        })
+        this.props.moveUp(index);
+    }
+
+
+    moveDown() {
+        let addresses = JSON.parse(storage.getItem('addresses'));
+        let index = null;
+        addresses.forEach((obj, i) => {
+            if (obj.name === this.props.name) {
+                index = i;
+            }
+        })
+        this.props.moveDown(index);
+    }
+
 
     render() {
         //display spinning wheel until the data is fetced and parsed
         if (this.state.thereIn === null || this.state.departureTime === null
-            || this.state.busNumber === null || this.state.departAddress === null
+            || this.state.departAddress === null
             || this.state.arrivalTime === null) {
             return(
                 <div className="single-hotspot">
@@ -108,18 +131,19 @@ export default class Hotspot extends React.Component {
         return(
             <div className="single-hotspot">
                 <h3>{this.props.name}</h3>
-                    <i className="arrow-up fa fa-chevron-up"></i>
-                    <i className="fa fa-times delete-hotspot" onClick={this.deleteHotspot.bind(this)}></i>
+                    <i className="arrow-up fa fa-chevron-up" onClick={() => this.moveUp()}></i>
+                    <i className="fa fa-times delete-hotspot" onClick={() => this.deleteHotspot()}></i>
                     <ul>
                         <li>
                             <span>{hoursNum}</span> {hours} <span>{minsNum}</span> {mins}
                         </li>
-                        <li>Departure time: {this.state.departureTime}</li>
-                        <li>Bus number: {this.state.busNumber}</li>
+                        <li>{this.state.departureTime}</li>
+                        <li>{this.state.busNumber}</li>
                         <StopInfo {...this.state.departAddress}/>
                         <li>Arrival time: {this.state.arrivalTime}</li>
                         <li>Distance: {this.state.distance}</li>
                     </ul>
+                    <i className="arrow-down fa fa-chevron-down" onClick={() => this.moveDown()}></i>
             </div>
         )
     }
