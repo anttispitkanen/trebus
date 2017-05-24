@@ -78,8 +78,7 @@ export default class Test extends React.Component {
                         return (
                             <Hotspot name={address.name}
                                     coords={address.coords}
-                                    startingAddress={this.props.startingAddress}
-                                    startingTreCoords={this.props.startingTreCoords}
+                                    startCoords={this.props.coords}
                                     key={address.coords}
                                     countHotspots={this.countHotspots.bind(this)}
                                     moveUp={this.moveUp.bind(this)}
@@ -100,8 +99,7 @@ export default class Test extends React.Component {
                         return (
                             <Hotspot name={address.name}
                                     coords={address.coords}
-                                    startingAddress={this.props.startingAddress}
-                                    startingTreCoords={this.props.startingTreCoords}
+                                    startCoords={this.props.coords}
                                     key={address.coords}
                                     countHotspots={this.countHotspots.bind(this)}
                                     moveUp={this.moveUp.bind(this)}
@@ -116,3 +114,7 @@ export default class Test extends React.Component {
 
     }
 }
+
+
+// startingAddress={this.props.startingAddress}
+// startingTreCoords={this.props.startingTreCoords}

@@ -24,7 +24,8 @@ export default class Hotspot extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                'startingTreCoords': this.props.startingTreCoords,
+                // 'startingTreCoords': this.props.startingTreCoords,
+                'startCoords': this.props.startCoords,
                 'coords': this.props.coords
             })
         })

@@ -35,9 +35,10 @@ app.set('view engine', 'ejs');
 
 app.post('/route', async (req, res) => {
     // const startAddress = req.body.address;
-    const startCoords = req.body.startingTreCoords;
+    // const startCoords = req.body.startingTreCoords;
+    const startCoords = req.body.startCoords;
     const destCoords = req.body.coords;
-    let queryURL = `http://api.publictransport.tampere.fi/prod/?${process.env.API_KEY}&${process.env.API_PASS}&request=route&from=${startCoords}&to=${destCoords}&show=1&Detail=limited`;
+    let queryURL = `http://api.publictransport.tampere.fi/prod/?${process.env.API_KEY}&${process.env.API_PASS}&request=route&from=${startCoords}&to=${destCoords}&show=1&Detail=limited&epsg_in=wgs84`;
 
     try {
         const response = await axios.get(queryURL);
@@ -46,9 +47,9 @@ app.post('/route', async (req, res) => {
         console.log(e);
     }
 
-
-
 })
+
+
 
 app.post('/locate-me', async (req, res) => {
     const latitude = req.body.latitude;
@@ -107,8 +108,16 @@ app.post('/locate-me', async (req, res) => {
 })
 
 
+// function parseAPIurl(address) {
+//     const defaultAPIurl = 'http://api.publictransport.tampere.fi/prod/?request=geocode&format=json&cities=tampere';
+//     let fromPart = 'key=' + encodeURIComponent(address);
+//     const fullAPIurl = defaultAPIurl + '&' + process.env.API_KEY + '&' + process.env.API_PASS + '&' + fromPart;
+//     //console.log(fullAPIurl);
+//     return fullAPIurl;
+// }
+
 function parseAPIurl(address) {
-    const defaultAPIurl = 'http://api.publictransport.tampere.fi/prod/?request=geocode&format=json&cities=tampere';
+    const defaultAPIurl = 'http://api.publictransport.tampere.fi/prod/?request=geocode&format=json&cities=tampere&epsg_out=wgs84';
     let fromPart = 'key=' + encodeURIComponent(address);
     const fullAPIurl = defaultAPIurl + '&' + process.env.API_KEY + '&' + process.env.API_PASS + '&' + fromPart;
     //console.log(fullAPIurl);

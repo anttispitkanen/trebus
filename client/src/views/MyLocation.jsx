@@ -9,7 +9,8 @@ export default class MyLocation extends React.Component {
             latitude: null,
             longitude: null,
             startingAddress: null,
-            startingTreCoords: null,
+            // startingTreCoords: null,
+            coords: null,
             locatingFailed: false
         }
     }
@@ -22,13 +23,14 @@ export default class MyLocation extends React.Component {
                 latitude: null,
                 longitude: null,
                 startingAddress: null,
-                startingTreCoords: null,
+                // startingTreCoords: null,
+                coords: null,
                 locatingFailed: false
             })
 
             navigator.geolocation.getCurrentPosition(pos => {
                 if (!pos) {
-                    alert('no https');
+                    alert('no https, can\'t locate you');
                 }
 
                 //console.log('lat:' + pos.coords.latitude);
@@ -36,35 +38,41 @@ export default class MyLocation extends React.Component {
 
                 this.setState({
                     latitude: pos.coords.latitude,
-                    longitude: pos.coords.longitude
+                    longitude: pos.coords.longitude,
+                    // coords: pos.coords.latitude + ',' + pos.coords.longitude,
+                    coords: pos.coords.longitude + ',' + pos.coords.latitude,
+                    startingAddress: 'Kotona ollaan :D'
                 })
 
                 // this one for debugging: set the address manually
                 // this.setState({ locatingFailed: true })
 
-                fetch('locate-me', {
-                    method: 'post',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        'latitude': this.state.latitude,
-                        'longitude': this.state.longitude
-                    })
-                })
-                .then(res => {
-                    if (res.ok) { return res.json() }
-                    else { throw Error('error in client promise :DD')}
-                })
-                .then(data => {
-                    this.setState({
-                        startingAddress: data.street + ' ' + data.house,
-                        startingTreCoords: data.treCoords
-                    });
-                })
-                .catch(e => {
-                    console.log(e);
-                })
+                // fetch('locate-me', {
+                //     method: 'post',
+                //     headers: {
+                //         'Content-Type': 'application/json'
+                //     },
+                //     body: JSON.stringify({
+                //         // 'latitude': this.state.latitude,
+                //         // 'longitude': this.state.longitude,
+                //         // 'coords': this.state.latitude + ',' + this.state.longitude
+                //     })
+                // })
+                // .then(res => {
+                //     if (res.ok) { return res.json() }
+                //     else { throw Error('error in client promise :DD')}
+                // })
+                // .then(data => {
+                //     this.setState({
+                //         startingAddress: data.street + ' ' + data.house,
+                //         startingTreCoords: data.treCoords
+                //     });
+                // })
+                // .catch(e => {
+                //     console.log(e);
+                // })
+
+
             }, failure => {
                 console.log(failure.message);
                 this.setState({
@@ -109,7 +117,7 @@ export default class MyLocation extends React.Component {
                             <li>Can't seem to locate you.</li>
                             <li>Wanna tell me where you are?</li>
                             <li>
-                                <form className="starting-address-form" onSubmit={this.manualAddress.bind(this)}>
+                                <form className="starting-address-form" onSubmit={(e) => this.manualAddress(e)}>
                                     <input className="address-from" id="address-from" type="text" placeholder="Your address"></input>
                                     <input type="submit" value="Done" className="button" />
                                 </form>
@@ -150,7 +158,7 @@ export default class MyLocation extends React.Component {
             )
         }
 
-        if (this.state.startingAddress === null) {
+        if (this.state.startingAddress === null || !this.state.coords) {
             return(
                 <div>
                     <div className="my-location">
@@ -182,11 +190,13 @@ export default class MyLocation extends React.Component {
 
                 <div>
                     <Hotspots
-                        startingAddress={this.state.startingAddress}
-                        startingTreCoords={this.state.startingTreCoords}
+                        coords={this.state.coords}
                     />
                 </div>
             </div>
         )
     }
 }
+
+// startingAddress={this.state.startingAddress}
+// startingTreCoords={this.state.startingTreCoords}

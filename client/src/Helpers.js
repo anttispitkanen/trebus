@@ -133,7 +133,7 @@ export default class Helpers {
             lineNum = null;
         }
 
-        return lineNum ? ('Bus number: ' + lineNum) : 'Just walk :DD';
+        return lineNum ? ('Bus number: ' + lineNum) : '';
     }
 
 
